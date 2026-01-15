@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <link rel="stylesheet" href="story-style.css">
+    <style>
+    #splash {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: black url('Plug in animation 2_1.gif') no-repeat center center;
+      background-size: contain;
+      z-index: 9999;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+  </style>
+    <body>
+        <head>
+            <div id="splash"></div>
+            <div class="container">
+                <h1>Debrief</h1>
+                <br>
+                <p>You are a KWF researcher on a mission in the Osa
+                    Peninsula, Costa Rica. Your goal: gather enough
+                    data to develop AI-driven conversation tools to protect
+                    endangered wildlife.
+                    <br>
+                    <br>
+                    <br>
+                    With 80 Credits, you must spend wisely and make strategic choices
+                        to complete your research.
+                </p>
+                <div class = "left-credits-image">
+                    <img src="images/credits.png" alt="Credits Image" height="350">
+                    <h2>Credits</h2>
+                </div>
+                <div class = "right-data-image">
+                    <img src="images/mission.png" alt="Data Image" height="350">
+                    <h2>Data</h2>
+                </div>
+                <div class="button-container">
+                    <button class="button" onclick="document.location=`video1.html`">Next</button>
+                    </div>
+            </div>
+        </head>
+        <script>
+    window.addEventListener('load', () => {
+      const splash = document.getElementById('splash');
+      setTimeout(() => {
+        splash.style.opacity = 0;
+        setTimeout(() => splash.style.display = 'none', 500);
+      }, 8500);
+    });
+  </script>
+    </body>
+</html>

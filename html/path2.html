@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="alt-path-style.css">
+    <title>Path 1</title>
+    <div class="top-left-image-container">
+        <img src="path1-image.png" alt="Credits">
+        <img src="path2-image.png" alt="Data">
+    </div>
+    <div class="top-right-timer-container">
+        <p>Time left: <span id="timer">00:10</span></p>
+    </div>
+    <div class="path-container">
+    <h1>Your fate is in your hands.</h1>
+    <div class = "left-button-container">
+        <button class = "button" onclick="document.location=`video2.html`">
+        <img src = "Explore the Forest.gif" height = "350">
+        </button>
+        <p>Explore the Forest</p>
+    </div>
+    <div class = "right-button-container">
+        <button class = "button" onclick="document.location=`video4.html`">
+        <img src = "Soar Over Canopy.gif" height = "350">
+        </button>
+        <p>Soar Above</p>
+    </div>
+    </div>
+    <script>
+        let timeLeft = 10;
+        const timerElement = document.getElementById('timer');
+
+        const countdown = setInterval(() => {
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                window.location.href = "story3.html";
+            } else {
+                timerElement.textContent = `00:0${timeLeft}`;
+                timeLeft--;
+            }
+        }, 1000);
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

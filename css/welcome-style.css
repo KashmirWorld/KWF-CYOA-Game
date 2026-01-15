@@ -1,0 +1,120 @@
+body{
+    background-image: url("Background.png");
+}
+head{
+    padding-top: 100px;
+}
+.container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: aliceblue;
+    width: 500px;
+    height: 325px;
+    border-radius: 10px;
+    padding: 20px;
+}
+.welcome-container{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 325px;
+    border-radius: 10px;
+    padding: 20px;
+}
+h1{
+    color:white;
+    text-align: center;
+    font-size: 40px;
+}
+h2{
+    color:darkgreen;
+    text-align: left;
+    font-size: 30px;
+}
+p{
+    color:black;
+    text-align: left;
+}
+.button-container {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+.welcome-button-container{
+    display: flex;
+    justify-content: center;
+}
+.button{
+    background-color: darkgreen;
+    color: white;
+    border: none;
+    padding: 20px 40px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 40px;
+}
+.button:hover {
+    background-color: green;
+}
+.button:active {
+    background-color: darkgreen;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+.button2 {
+    background-color: aliceblue;
+    color: black;
+    border: none;
+    padding: 20px 40px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 40px;
+}
+.button2:hover {
+    background-color: lightblue;
+}
+.button2:active {
+    background-color: rgb(89, 110, 117);
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
+#bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100%;
+  z-index: -1; /* Put it behind other content */
+  object-fit: cover; /* Scale the video to fill the screen */
+}
+
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Black with 50% opacity */
+  z-index: -1; /* Between video and content */
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  color: gray; /* Optional: improve contrast over video */
+  text-align: center;
+  padding-top: 20%;
+}

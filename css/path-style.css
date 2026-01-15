@@ -1,0 +1,45 @@
+body{
+    background-image: url(Background.png);
+}
+head{
+    padding-top: 100px;
+}
+.path-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: aliceblue;
+    width: 500px;
+    height: 325px;
+    border-radius: 10px;
+    padding: 20px;
+}
+.left-button-container {
+    position: absolute;
+    left: 20px;
+}
+.right-button-container {
+    position: absolute;
+    right: 20px;
+}
+h1{
+    color:darkgreen;
+    text-align: left;
+    font-size: 30px;
+}
+p{
+    color:darkgreen;
+    text-align: center;
+    font-size: 15px;
+}
+.top-left-image-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+.top-right-timer-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}

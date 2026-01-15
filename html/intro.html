@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <head>
+        <link rel="stylesheet" href="welcome-style.css">
+        </head>
+        <div class="container">
+        <h2 id = "header">You're invited to the Kashmir World Foundation (KwF) Conservation Expedition!</h2>
+        <p id = "text">At Kashmir World Foundation (KwF), we're embarking on a new frontier in wildlife
+            conservation. Our mission is simple but powerful: to protect endagered species
+            and conserve critical habitates by fusing groundbreaking solutions in art, science,
+             and technology.
+        </p>
+        <br/>
+        <div class="button-container">
+        <button class = "button2" onclick = "document.location=`path1.html`">Skip</button>
+        <button class = "button" onclick = "changeText()" id = "textBlock">Next</button>
+        </div>
+        <script>
+            let currentLine = 0;
+            function changeText() {
+                const textElement = document.getElementById("text");
+                const headerElement = document.getElementById("header");
+                switch (currentLine){
+                    case 0:
+                        headerElement.innerText = "At KwF, we don't just observe nature; we engage with it.";
+                        textElement.innerText = "Our projects combine state-of-the-art technology with hands-on fieldwork, " +
+                        "working alongside local communities, researchers, and passionate interns from around the world." +
+                        " These dedicated invidiuals bring fresh perspectives and energy, contributing to everything from AI-powered" +
+                        " surveillance systems to bioacoustic monitoring tools.";
+                        currentLine++;
+                        break;
+                    case 1:
+                        headerElement.innerText = "But it doesn't stop there.";
+                        textElement.innerText = "We believe conservation is a collective effort. That's why we're inviting you to" +
+                        " join us in pushing the boundaries of what's possible. By uniting our expertise, technology, and passion," +
+                        " together we can create new tools, systems, and solutions to protect the planet's most endangered species "+
+                        "and fragile ecosystems.";
+                        currentLine++;
+                        break;
+                    case 2:
+                        headerElement.innerText = "Your journey is just the beginning.";
+                        textElement.innerText = "You've chosen to step into this transformative effort. As a researcher, your mission is"+
+                        " clear: listen to the sounds of the rainforest, deploy advanced tools, and help develop the BioSonic Security System-"+
+                        "an AI-powered system designed to monitor and protect endangered species.";
+                        currentLine++;
+                        break;
+                        case 3:
+                            window.location.href = "path1.html";
+                            return;
+                }
+            }
+        </script> 
+    </body>
+</html>

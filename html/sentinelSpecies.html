@@ -1,0 +1,148 @@
+<link rel="stylesheet" href="sentinelSpecies-style.css">
+<div id="species-list">
+  <div class="species" data-id="howler-monkey">
+    <img src="howler_monkey.jpg" alt="Howler Monkey" />
+    <span>Howler Monkey</span>
+  </div>
+  <div class="species" data-id="great-tinamou">
+    <img src="great_tinamou.jpg" alt="Great Tinamou" />
+    <span>Great Tinamou</span>
+  </div>
+  <div class="species" data-id="scarlet-macaw">
+    <img src="scarlet_macaw.jpg" alt="Scarlet Macaw" />
+    <span>Scarlet Macaw</span>
+  </div>
+</div>
+<div id="audio-draggables"></div>
+<div id="score">Data Points: 0</div>
+<div id="interrupt-modal" style="display:none">
+  <div class="modal-content">
+    <p id="interrupt-text"></p>
+    <button class="interrupt-btn" data-id="howler-monkey">Howler Monkey</button>
+    <button class="interrupt-btn" data-id="great-tinamou">Great Tinamou</button>
+    <button class="interrupt-btn" data-id="scarlet-macaw">Scarlet Macaw</button>
+    <p id="interrupt-feedback" style="margin-top: 12px; font-weight: bold;"></p>
+  </div>
+</div>
+<script>
+    const speciesData = [
+  { id: 'howler-monkey', name: 'Howler Monkey', img: 'howler_monkey.jpg', audio: 'howler_monkey.mp3' },
+  { id: 'great-tinamou', name: 'Great Tinamou', img: 'great_tinamou.jpg', audio: 'great_tinamou.mp3' },
+  { id: 'scarlet-macaw', name: 'Scarlet Macaw', img: 'scarlet_macaw.jpg', audio: 'scarlet_macaw.mp3' },
+];
+let score = 0;
+function setupAudioDraggables() {
+  const container = document.getElementById('audio-draggables');
+  speciesData.forEach(species => {
+    const audioElem = document.createElement('div');
+    audioElem.textContent = `🔊`;
+    audioElem.draggable = true;
+    audioElem.dataset.id = species.id;
+    audioElem.addEventListener('dragstart', function(e) {
+      e.dataTransfer.setData("speciesId", species.id);
+    });
+    audioElem.addEventListener('click', () => {
+      new Audio(species.audio).play();
+    });
+    container.appendChild(audioElem);
+  });
+}
+document.querySelectorAll('.species').forEach(el => {
+  el.addEventListener('dragover', (e) => e.preventDefault());
+  el.addEventListener('drop', (e) => {
+    let draggedId = e.dataTransfer.getData('speciesId');
+    if (draggedId === el.dataset.id) {
+      score += 1;
+      document.getElementById('score').textContent = "Data Points: " + score;
+      el.classList.add('correct');
+    } else {
+      el.classList.add('incorrect');
+    }
+    setTimeout(() => el.classList.remove('correct', 'incorrect'), 1500);
+  });
+});
+function startInterruptEvents() {
+  let interruptsLeft = 1;
+
+  function interrupt() {
+  if (interruptsLeft > 0) {
+    setTimeout(() => {
+      let species = speciesData[Math.floor(Math.random() * speciesData.length)];
+      let modal = document.getElementById('interrupt-modal');
+      let interruptText = document.getElementById('interrupt-text');
+      let feedback = document.getElementById('interrupt-feedback');
+
+      interruptText.textContent = "Stop! Listen! A sentinel species is nearby. Can you identify it?";
+      feedback.textContent = "";
+      modal.style.display = "flex";
+
+      const buttons = document.querySelectorAll('.interrupt-btn');
+      
+      // Disable buttons initially and remove old click handlers (if any)
+      buttons.forEach(btn => {
+        btn.disabled = true;
+        btn.onclick = null;
+      });
+
+      // Attach click handlers once for this cycle
+      buttons.forEach(btn => {
+        btn.onclick = () => {
+          if (btn.disabled) return; // Prevent clicks if disabled
+          if (btn.dataset.id === species.id) {
+            score += 1;
+            document.getElementById('score').textContent = "Data Points: " + score;
+            feedback.textContent = "Congrats! That's correct.";
+          } else {
+            feedback.textContent = `Close one! But it's actually the ${species.name}.`;
+          }
+
+          buttons.forEach(b => b.disabled = true);
+
+          setTimeout(() => {
+            feedback.textContent = "";
+            modal.style.display = "none";
+            interruptsLeft -= 1;
+            interrupt();
+          }, 2000);
+        };
+      });
+
+      // Play audio
+      const audio = new Audio(species.audio);
+      audio.play();
+
+      //Enable buttons only after audio ends
+      audio.addEventListener('ended', () => {
+        buttons.forEach(btn => btn.disabled = false);
+      });
+    }, Math.random() * 10000 + 5000);
+  }
+}
+
+  interrupt();
+}
+  async function playIntroSequence() {
+    for (const species of speciesData) {
+      const speciesElem = document.querySelector(`.species[data-id="${species.id}"]`);
+      speciesElem.classList.add('glow');
+
+      await new Promise((resolve) => {
+        const audio = new Audio(species.audio);
+        audio.play();
+        audio.addEventListener('ended', () => {
+          speciesElem.classList.remove('glow');
+          // slight pause between audios
+          setTimeout(resolve, 500);
+        });
+      });
+    }
+    // After intro sequence ends, start interrupts
+    startInterruptEvents();
+  }
+
+
+setupAudioDraggables();
+playIntroSequence();
+
+
+</script>

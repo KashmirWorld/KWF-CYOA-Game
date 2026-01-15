@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="alt-path-style.css">
+  <title>Path 2</title>
+</head>
+<body>
+    <div id="enable-sound-container" style="
+        position: fixed;
+        bottom: 40px;
+        right: 40px;
+        background: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        border-radius: 12px;
+        padding: 16px 24px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        font-family: system-ui, sans-serif;
+        font-size: 1em;
+        z-index: 9999;
+        opacity: 1;
+        transition: opacity 0.4s ease;
+    ">
+    <span>🔊 Click to enable sound</span>
+    </div>
+  <div class="top-left-image-container">
+    <img src="path1-image.png" alt="Credits">
+    <img src="path2-image.png" alt="Data">
+  </div>
+
+  <div class="top-right-timer-container">
+    <p>Time left: <span id="timer">00:10</span></p>
+  </div>
+
+  <div class="path-container">
+    <h1>Your fate is in your hands.</h1>
+
+    <div class="alt-left-button-container">
+      <button class="button" onmouseenter="playAudio('DeploySensorsAudio')" onclick="location.href='video6.html'">
+        <img src="Camera Trap.gif" height="350" alt="Deploy Sensors">
+      </button>
+      <p>Deploy Sensors</p>
+    </div>
+
+    <div class="middle-button-container">
+      <button class="button" onmouseenter="playAudio('CollectEnvironmentalDataAudio')" onclick="location.href='video3.html'">
+        <img src="Collect_Environmental_Data.gif" height="350" alt="Collect Environmental Data">
+      </button>
+      <p>Collect Environmental Data</p>
+    </div>
+
+    <div class="alt-right-button-container">
+      <button class="button" onmouseenter="playAudio('runSimulationsAudio')" onclick="location.href='video5.html'">
+        <img src="Run Simulations Back at the Station_1.gif" height="350" alt="Run Simulations">
+      </button>
+      <p>Run Simulations</p>
+    </div>
+  </div>
+
+  <audio id="runSimulationsAudio" preload="auto">
+    <source src="RUN SIMULATIONS 1.wav" type="audio/wav">
+    Your browser does not support the audio element.
+  </audio>
+  <audio id="CollectEnvironmentalDataAudio" preload="auto">
+    <source src="COLLECT ENVIRONMENT DATA.wav" type="audio/wav">
+    Your browser does not support the audio element.
+  </audio>
+  <audio id="DeploySensorsAudio" preload="auto">
+    <source src="Camera trap with out beeps.wav" type="audio/wav">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      let timeLeft = 10;
+      const timerElement = document.getElementById('timer');
+
+      const countdown = setInterval(() => {
+        if (timeLeft <= 0) {
+          clearInterval(countdown);
+          window.location.href = "story3.html";
+        } else {
+          timerElement.textContent = `00:${String(timeLeft).padStart(2, '0')}`;
+          timeLeft--;
+        }
+      }, 1000);
+    });
+
+    function playAudio(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      try {
+        el.currentTime = 0;
+        const p = el.play();
+        if (p && typeof p.then === 'function') {
+          p.catch(() => { /* autoplay blocked or other issue; ignore */ });
+        }
+      } catch (_) { /* ignore */ }
+    }
+
+    const hoverAudioMap = {
+    'alt-left-button-container': 'DeploySensorsAudio',
+    'middle-button-container': 'CollectEnvironmentalDataAudio',
+    'alt-right-button-container': 'runSimulationsAudio'
+  };
+
+  Object.entries(hoverAudioMap).forEach(([containerClass, audioId]) => {
+    const button = document.querySelector(`.${containerClass} .button`);
+    const audio = document.getElementById(audioId);
+    if (!button || !audio) return;
+
+    button.addEventListener('mouseenter', () => {
+      audio.currentTime = 0;
+      audio.play().catch(() => {});
+    });
+
+    button.addEventListener('mouseleave', () => {
+      audio.pause();
+      audio.currentTime = 0;
+    });
+  });
+
+    document.getElementById('enable-sound').addEventListener('click', () => {
+    document.querySelectorAll('audio').forEach(a => {
+      a.play().then(() => {
+        a.pause();
+        a.currentTime = 0;
+      }).catch(() => {});
+    });
+
+    soundOverlay.style.opacity = '0';
+    setTimeout(() => soundOverlay.remove(), 400);
+  });
+  </script>
+</body>
+</html>
