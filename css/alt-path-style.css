@@ -1,5 +1,5 @@
 body{
-    background-image: url(Background.png);
+    background-image: url(C:\Users\laure\Dropbox\KashmirProject\KWF-CYOA-Game\Photos\Background.png);
 }
 h1{
     color: white;
@@ -76,7 +76,7 @@ h1{
     gap: 0px;
 }
 .top-left-image-container img {
-    float: left;  /* fixes spacing from inline behavior */
+    float: left;
     margin: 0;
     padding: 0;
 }
