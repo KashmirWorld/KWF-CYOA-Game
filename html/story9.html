@@ -1,19 +1,60 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="C:\Users\laure\Dropbox\KashmirProject\KWF-CYOA-Game\css\story-style.css">
-    <meta charset="UTF-8" />
-    <title>Create Map</title>
-    <div class="container">
-    <h1>Monitor the Terrain</h1>
-    <p>
-        Using the drone footage, you generate a high-resolution terrain and vegetation map of the region around Tamandua. It highlights ridge lines, water sources, and open clearing-perfect for planning research routes or future sensor drops. The map syncs with KWF's DeepDate network, improving expedition logistics across the board.
-    </p>
-    <div class="button-container">
-    <button onclick="window.location.href='path5.html'">Next</button>
-    </div>
+  <link rel="stylesheet" href="C:\Users\laure\Dropbox\KashmirProject\KWF-CYOA-Game\css\story-style.css">
+  <meta charset="UTF-8" />
+  <title>Create Map</title>
 </head>
 <body>
-    
+  <div class="container">
+    <h1>Create Map</h1>
+    <p>
+      Using the drone footage, you generate a high-resolution terrain and vegetation 
+      map of the region around Tamandua. It highlights ridge lines, water sources, 
+      and open clearings—perfect for planning research routes or future sensor drops.
+    </p>
+    <p>The map syncs with KWF's DeepData network, improving expedition logistics across the board.</p>
+
+    <!-- Live credits/data display -->
+    <div id="stats-display" style="
+      background: rgba(0,0,0,0.8); 
+      color: white; 
+      padding: 12px; 
+      border-radius: 8px; 
+      margin: 20px 0;
+      font-family: system-ui, sans-serif;
+      text-align: center;
+    ">
+      <span id="credits-readout">Credits: 0</span> | 
+      <span id="data-readout">Data: 0</span>
+    </div>
+
+    <div class="button-container">
+      <button id="next-btn" class="button">Next</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../JavaScript/game-state.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+  // Apply map creation effect: +1 data (FREE action, no credit cost)
+  RainforestGame.addData(1);
+
+  // Update live stats display
+  RainforestGame.updateUI();
+
+  // Next button → path5.html
+  const nextBtn = document.getElementById('next-btn');
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      RainforestGame.updateUI(); // Final refresh before leaving
+      window.location.href = 'scene2video.html';
+    });
+  } else {
+    console.warn('Next button (#next-btn) not found');
+  }
+});
+  </script>
 </body>
 </html>

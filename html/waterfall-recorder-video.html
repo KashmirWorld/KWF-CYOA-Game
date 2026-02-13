@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="../css/video-style.css">
+    <title>Waterfall Recorder</title>
+    <meta charset="UTF-8" />
+    <video id = "video-1" width="640" height="360" controls>
+    <source src="../Videos/ALIYAH_20250317_1754_0462.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+<script>
+  const video = document.getElementById("video-1");
+  video.addEventListener("ended", () => {
+    window.location.href = "waterfall-recorder.html"; // Change to your desired URL
+  });
+</script>
+</head>
+<body>
+    
+</body>
+</html>

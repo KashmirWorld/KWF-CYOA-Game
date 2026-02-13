@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="C:\Users\laure\Dropbox\KashmirProject\KWF-CYOA-Game\css\story-style.css">
+  <meta charset="UTF-8" />
+  <title>Deploy Drone</title>
+</head>
+<body>
+  <div class="container">
+    <h1>Follow - Deploy Drone</h1>
+    <p>
+      You launch a drone to investigate the canopy and surrounding area. Its footage may 
+      reveal species or patterns hidden from the ground.
+    </p>
+    <p>
+      Later, the drone captures footage of a rare bird species nesting high in the trees—valuable data!
+    </p>
+
+    <!-- Live credits/data display -->
+    <div id="stats-display" style="
+      background: rgba(0,0,0,0.8); 
+      color: white; 
+      padding: 12px; 
+      border-radius: 8px; 
+      margin: 20px 0;
+      font-family: system-ui, sans-serif;
+      text-align: center;
+    ">
+      <span id="credits-readout">Credits: 0</span> | 
+      <span id="data-readout">Data: 0</span>
+    </div>
+
+    <div class="button-container">
+      <button id="next-btn" class="button">Next</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../JavaScript/game-state.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Apply drone deployment: -20 credits, +2 data (exact Ink logic)
+      if (RainforestGame.canAfford(20)) {
+        RainforestGame.spendCredits(20);
+        RainforestGame.addData(2);
+      }
+
+      // Update live stats display
+      RainforestGame.updateUI();
+
+      // Next button → Scene 3
+      const nextBtn = document.getElementById('next-btn');
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          RainforestGame.updateUI();
+          window.location.href = 'Scene3.html';
+        });
+      }
+    });
+  </script>
+</body>
+</html>

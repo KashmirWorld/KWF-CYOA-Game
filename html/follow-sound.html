@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="C:\Users\laure\Dropbox\KashmirProject\KWF-CYOA-Game\css\story-style.css">
+  <meta charset="UTF-8" />
+  <title>Follow Sound Discovery</title>
+</head>
+<body>
+  <div class="container">
+    <h1>Follow Sound</h1>
+    <p>
+      You decide to follow the eerie, rhythmic sound. It leads you to a hidden waterfall 
+      teeming with wildlife—frogs croak in precise patterns, birds dart between mist clouds.
+    </p>
+
+    <!-- Live credits/data display -->
+    <div id="stats-display" style="
+      background: rgba(0,0,0,0.8); 
+      color: white; 
+      padding: 12px; 
+      border-radius: 8px; 
+      margin: 20px 0;
+      font-family: system-ui, sans-serif;
+      text-align: center;
+    ">
+      <span id="credits-readout">Credits: <span class="credits-value">$credits</span></span> | 
+      <span id="data-readout">Data: <span class="data-value">$data</span></span>
+    </div>
+
+    <div class="button-container">
+      <button id="next-btn" class="button">Next</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../JavaScript/game-state.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Apply follow-sound discovery: +1 data (matches your Ink logic)
+      RainforestGame.addData(1);
+
+      // Update live stats display
+      RainforestGame.updateUI();
+
+      // Next button → waterfall-equipment.html (your path choice page)
+      const nextBtn = document.getElementById('next-btn');
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          RainforestGame.updateUI(); // Final refresh before leaving
+          window.location.href = 'follow-sound-path.html';
+        });
+      } else {
+        console.warn('Next button (#next-btn) not found');
+      }
+    });
+  </script>
+</body>
+</html>

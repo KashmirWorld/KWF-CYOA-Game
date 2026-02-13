@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="../css/alt-path-style.css">
+  <title>Waterfall Decision</title>
+</head>
+<body>
+
+  <div class="top-left-image-container">
+    <img src="../Photos/credits-icon.png" alt="Credits">
+    <span id="credits-readout">Credits: <span class="credits-value">$credits</span></span>
+    <span id="data-readout">Data: <span class="data-value">$data</span></span>
+    <img src="../Photos/data-icon.png" alt="Data">
+  </div>
+
+  <div class="top-right-timer-container">
+    <p>Time left: <span id="timer">00:15</span></p>
+  </div>
+
+  <div class="path-container">
+  <!-- Four choices in horizontal row -->
+  <div class="choice-row">
+    
+    <!-- 1. Bioacoustic -->
+    <div class="choice-item">
+      <button class="button" id="bioacoustic-btn">
+        <img src="../Photos/Set_up_bioacostic_recorder_1.gif" alt = "Set up Recorder">
+      </button>
+      <p><strong>Bioacoustic<br>Recorder</strong><br><small>-20 Credits</small></p>
+    </div>
+
+    <!-- 2. Drone -->
+    <div class="choice-item">
+      <button class="button" id="drone-btn">
+        <img src="../Photos/Drone.gif" alt="Deploy Drone">
+      </button>
+      <p><strong>Deploy<br>Drone</strong><br><small>-20 Credits</small></p>
+    </div>
+
+    <!-- 3. Ignore -->
+    <div class="choice-item">
+      <button class="button" id="ignore-btn">
+        <img src="../Photos/Ignore sound.gif" alt="Move Forward">
+      </button>
+      <p>Ignore &<br>Move Forward</p>
+    </div>
+
+    <!-- 4. Follow Sound -->
+    <div class="choice-item">
+      <button class="button" id="follow-sound-btn">
+        <img src="../Photos/follow sound.gif" alt="Follow Sound">
+      </button>
+      <p><strong>Follow the<br>Sound</strong></p>
+    </div>
+
+  </div>
+</div>
+
+
+  <!-- Audio elements (unchanged) -->
+  <audio id="bioacousticAudio" preload="auto">
+    <source src="../Audio/Bioacoustic_Recorder.wav" type="audio/wav">
+  </audio>
+  <audio id="droneAudio" preload="auto">
+    <source src="../Audio/Drone_Deploy.wav" type="audio/wav">
+  </audio>
+  <audio id="waterfallAmbient" preload="auto" loop>
+    <source src="../Audio/Waterfall_Ambient.wav" type="audio/wav">
+  </audio>
+
+  <!-- Scripts (unchanged) -->
+  <script src="../JavaScript/game-state.js"></script>
+  <script src="../JavaScript/waterfall-path.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      RainforestGame.updateUI();
+      
+      // Play ambient waterfall sound
+      const ambient = document.getElementById('waterfallAmbient');
+      ambient?.play().catch(() => {});
+
+      // Cost checks (only for paid options)
+      const paidBtns = ['bioacoustic-btn', 'drone-btn'];
+      paidBtns.forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn && !RainforestGame.canAfford(20)) {
+          btn.disabled = true;
+          btn.style.opacity = '0.5';
+        }
+      });
+
+      // All four button handlers
+      document.getElementById('bioacoustic-btn')?.addEventListener('click', () => {
+        if (RainforestGame.canAfford(20)) {
+          RainforestGame.spendCredits(20);
+          RainforestGame.addData(2);
+          window.location.href = 'bioacoustic-recorder.html';
+        }
+      });
+
+      document.getElementById('drone-btn')?.addEventListener('click', () => {
+        if (RainforestGame.canAfford(20)) {
+          RainforestGame.spendCredits(20);
+          RainforestGame.addData(1);
+          window.location.href = 'deploy-drone-video.html';
+        }
+      });
+
+      document.getElementById('ignore-btn')?.addEventListener('click', () => {
+        window.location.href = 'ignore-sound.html';
+      });
+
+      document.getElementById('follow-sound-btn')?.addEventListener('click', () => {
+        RainforestGame.addData(3);
+        window.location.href = 'follow-sound-video.html';
+      });
+    });
+  </script>
+</body>
+</html>

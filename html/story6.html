@@ -1,20 +1,66 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="C:\Users\laure\Dropbox\KashmirProject\KWF-CYOA-Game\css\story-style.css">
-    <meta charset="UTF-8" />
-    <title>Run Simulations</title>
-    <div class="container">
-    <h1>Run Simulations</h1>
-    <p>
-        Back at Tamandua Station, you load recent sensor data into your laptop. Using species movement models and terrain overlays, you simulate potential wildlife corridors and predator-prey interactions.
-        The simulation reveals a likely nesting zone for scarlet macaws near a cluster of almendro trees. With this insight, you decide where to head next.
-    </p>
-    <div class="button-container">
-    <button onclick="window.location.href='path4.html'">Next</button>
-    </div>
+  <link rel="stylesheet" href="C:\Users\laure\Dropbox\KashmirProject\KWF-CYOA-Game\css\story-style.css">
+  <meta charset="UTF-8" />
+  <title>Run Simulations</title>
 </head>
 <body>
-    
+  <div class="container">
+    <h1>Run Simulations</h1>
+    <p>
+      Back at Tamandua Station, you load recent sensor data into your laptop. 
+      Using species movement models and terrain overlays, you simulate potential 
+      wildlife corridors and predator-prey interactions.
+    </p>
+    <p>
+      The simulation reveals a likely nesting zone for scarlet macaws near a 
+      cluster of almendro trees. With this insight, you decide where to head next.
+    </p>
+
+    <!-- Live credits/data display -->
+    <div id="stats-display" style="
+      background: rgba(0,0,0,0.8); 
+      color: white; 
+      padding: 12px; 
+      border-radius: 8px; 
+      margin: 20px 0;
+      font-family: system-ui, sans-serif;
+      text-align: center;
+    ">
+      <span id="credits-readout">Credits: 0</span> | 
+      <span id="data-readout">Data: 0</span>
+    </div>
+
+    <div class="button-container">
+      <button id="next-btn" class="button">Next</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../JavaScript/game-state.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+  // Apply simulation effect: -10 credits, +1 data (exactly your Ink logic)
+  if (RainforestGame.canAfford(10)) {
+    RainforestGame.spendCredits(10);
+    RainforestGame.addData(1);
+  }
+
+  // Update live stats display
+  RainforestGame.updateUI();
+
+  // Next button → path4.html
+  const nextBtn = document.getElementById('next-btn');
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      RainforestGame.updateUI(); // Final refresh before leaving
+      window.location.href = 'scene2video.html';
+    });
+  } else {
+    console.warn('Next button (#next-btn) not found');
+  }
+});
+  </script>
 </body>
 </html>

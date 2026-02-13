@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="C:\Users\laure\Dropbox\KashmirProject\KWF-CYOA-Game\css\story-style.css">
+  <meta charset="UTF-8" />
+  <title>Set up a Camera Trap</title>
+</head>
+<body>
+  <div class="container">
+    <h1>Set up a Camera Trap</h1>
+    <p>
+      You mount the camera trap on a sturdy tree facing the game trail. 
+      As you adjust the settings, the jungle quiets—only the distant call of a howler monkey 
+      breaks the stillness. You also deploy an acoustic sensor nearby, calibrated to capture 
+      ultrasonic calls and low-frequency movements.
+    </p>
+    <p>Soon, the forest will record its own secrets. You mark the location on your GPS and prepare to move on.</p>
+
+    <!-- Live credits/data display -->
+    <div id="stats-display" style="
+      background: rgba(0,0,0,0.8); 
+      color: white; 
+      padding: 12px; 
+      border-radius: 8px; 
+      margin: 20px 0;
+      font-family: system-ui, sans-serif;
+      text-align: center;
+    ">
+      <span id="credits-readout">Credits: 0</span> | 
+      <span id="data-readout">Data: 0</span>
+    </div>
+
+    <div class="button-container">
+      <button id="next-btn" class="button">Next</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../JavaScript/game-state.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+  // Apply camera trap effect: -30 credits, +1 data (exactly your Ink logic)
+  if (RainforestGame.canAfford(30)) {
+    RainforestGame.spendCredits(30);
+    RainforestGame.addData(1);
+  }
+
+  // Update live stats display
+  RainforestGame.updateUI();
+
+  // Next button → Scene 2
+  const nextBtn = document.getElementById('next-btn');
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      RainforestGame.updateUI(); // Final refresh before leaving
+      window.location.href = 'scene2.html';
+    });
+  } else {
+    console.warn('Next button (#next-btn) not found');
+  }
+});
+  </script>
+</body>
+</html>

@@ -1,23 +1,62 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="C:\Users\laure\Dropbox\KashmirProject\KWF-CYOA-Game\css\story-style.css">
-    <meta charset="UTF-8" />
-    <title>Collect Data</title>
-    <div class="container">
-    <h1>Collect Environmental Data</h1>
-    <p>
-        You take out your handheld sensors and begin collecting tempurature, humidity, and soil moisture data. Nearby, you spot bromeliads harboring tiny tree frogs-key bioindicators.
-        <br>
-        <br>
-        <br>
-        With a few more readings in your notebook, you're ready to continue deeper into the forest.
-    </p>
-    <div class="button-container">
-    <button onclick="window.location.href='video1.html'">Next</button>
-    </div>
+  <link rel="stylesheet" href="C:\Users\laure\Dropbox\KWF-CYOA-Game\KWF-CYOA-Game\css\story-style.css">
+  <meta charset="UTF-8" />
+  <title>Collect Environmental Data</title>
 </head>
 <body>
-    
+  <div class="container">
+    <h1>Collect Environmental Data</h1>
+    <p>
+      You take out your handheld sensors and begin collecting temperature, humidity, 
+      and soil moisture data. Nearby, you spot bromeliads harboring tiny tree frogs—key bioindicators.
+    </p>
+    <p>With a few more readings in your notebook, you're ready to continue deeper into the forest.</p>
+
+    <!-- Live credits/data display -->
+    <div id="stats-display" style="
+      background: rgba(0,0,0,0.8); 
+      color: white; 
+      padding: 12px; 
+      border-radius: 8px; 
+      margin: 20px 0;
+      font-family: system-ui, sans-serif;
+      text-align: center;
+    ">
+      <span id="credits-readout">Credits: 0</span> | 
+      <span id="data-readout">Data: 0</span>
+    </div>
+
+    <div class="button-container">
+      <button id="next-btn" class="button">Next</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../JavaScript/game-state.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+  // Apply data collection effect: -5 credits, +1 data (exactly your Ink logic)
+  if (RainforestGame.canAfford(5)) {
+    RainforestGame.spendCredits(5);
+    RainforestGame.addData(1);
+  }
+
+  // Update live stats display
+  RainforestGame.updateUI();
+
+  // Next button → video1.html
+  const nextBtn = document.getElementById('next-btn');
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      RainforestGame.updateUI(); // Final refresh before leaving
+      window.location.href = 'scene2video.html';
+    });
+  } else {
+    console.warn('Next button (#next-btn) not found');
+  }
+});
+  </script>
 </body>
 </html>

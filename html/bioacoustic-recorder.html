@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="C:\Users\laure\Dropbox\KashmirProject\KWF-CYOA-Game\css\story-style.css">
+  <meta charset="UTF-8" />
+  <title>Set up a Bioacoustic Recorder</title>
+</head>
+<body>
+  <div class="container">
+    <h1>Set up a Bioacoustic Recorder</h1>
+    <p>
+      You set up a Bioacoustic Recorder to capture the mysterious sound, hoping it leads 
+      to a valuable discovery.
+    </p>
+    <p>
+      Later on, you were able to capture sounds that adds to your bioacoustics research!
+    </p>
+
+    <!-- Live credits/data display -->
+    <div id="stats-display" style="
+      background: rgba(0,0,0,0.8); 
+      color: white; 
+      padding: 12px; 
+      border-radius: 8px; 
+      margin: 20px 0;
+      font-family: system-ui, sans-serif;
+      text-align: center;
+    ">
+      <span id="credits-readout">Credits: 0</span> | 
+      <span id="data-readout">Data: 0</span>
+    </div>
+
+    <div class="button-container">
+      <button id="next-btn" class="button">Next</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../JavaScript/game-state.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Apply bioacoustic recorder: -20 credits, +2 data (exact Ink logic)
+      if (RainforestGame.canAfford(20)) {
+        RainforestGame.spendCredits(20);
+        RainforestGame.addData(2);
+      }
+
+      // Update live stats display
+      RainforestGame.updateUI();
+
+      // Next button → Scene 3 (update filename as needed)
+      const nextBtn = document.getElementById('next-btn');
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          RainforestGame.updateUI(); // Final refresh
+          window.location.href = 'Scene3.html'; // Matches (click-goto:?page,"Scene 3")
+        });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="../css/alt-path-style.css">
+  <title>Choose Equipment</title>
+</head>
+<body>
+  <div class="top-left-image-container">
+  <img src="../Photos/IMG_9912.png" alt="Credits" width="40" height="40">
+  <span id="credits-readout">Credits: 0</span>
+  <span id="data-readout">Data: 0</span>
+  <img src="../Photos/data-icon.png" alt="Data" width="40" height="40">
+</div>
+
+
+  <div class="top-right-timer-container">
+    <p>Time left: <span id="timer">00:10</span></p>
+  </div>
+
+  <div class="path-container">
+    <h1>Choose Your Path</h1>
+
+    <!-- Camera Trap (-30 Credits) - conditional if credits > 29 -->
+    <div class="left-button-container">
+      <button class="button" id="camera-trap-btn">
+        <img src="../Photos/Camera Trap.gif" height="350" alt="Camera Trap">
+      </button>
+      <p><strong>Camera Trap</strong><br><small>-30 Credits</small></p>
+    </div>
+
+    <!-- Bioacoustic Recorder (-20 Credits) - conditional if credits > 19 -->
+    <div class="right-button-container">
+      <button class="button" id="bioacoustic-btn">
+        <img src="../Photos/Bioacoustic Recorder.gif" height="350" alt="Recorder">
+      </button>
+      <p><strong>Bioacoustic<br>Recorder</strong><br><small>-20 Credits</small></p>
+    </div>
+
+    <!-- Always available: Move On (free, bottom option) -->
+    <div class="bottom-button-container" style="position: absolute; bottom: -100px; left: 50%; transform: translateX(-50%);">
+      <button class="button" id="move-on-btn">
+        <img src="../Photos/Move_On.gif" height="200" alt="Move On">
+      </button>
+      <p>Move On</p>
+    </div>
+  </div>
+
+  <!-- Audio elements -->
+  <audio id="cameraTrapAudio" preload="auto">
+    <source src="../Audio/Camera_Trap.wav" type="audio/wav">
+  </audio>
+  <audio id="bioacousticAudio" preload="auto">
+    <source src="../Audio/Bioacoustic_Recorder.wav" type="audio/wav">
+  </audio>
+
+  <!-- Scripts -->
+  <script src="../JavaScript/game-state.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+  RainforestGame.updateUI();
+
+  // INLINE TIMER (your current buttons stay)
+    let timeLeft = 10;
+    const timerEl = document.getElementById('timer');
+    const timer = setInterval(() => {
+      timeLeft--;
+      timerEl.textContent = `${timeLeft.toString().padStart(2, '0')}:00`;
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        document.getElementById('ignore-btn')?.click(); // or your default
+      }
+    }, 1000);
+  
+  // Exact Ink cost checks
+  const cameraTrapBtn = document.getElementById('camera-trap-btn');
+  const bioacousticBtn = document.getElementById('bioacoustic-btn');
+  
+  // Hide Camera Trap if credits <= 29
+  if (!RainforestGame.canAfford(30)) {
+    cameraTrapBtn.parentElement.style.display = 'none';
+  }
+  
+  // Hide Bioacoustic if credits <= 19  
+  if (!RainforestGame.canAfford(20)) {
+    bioacousticBtn.parentElement.style.display = 'none';
+  }
+  
+  // Button logic
+  cameraTrapBtn?.addEventListener('click', () => {
+    RainforestGame.spendCredits(30);
+    RainforestGame.addData(3);
+    window.location.href = 'waterfall-trap-video.html';
+  });
+  
+  bioacousticBtn?.addEventListener('click', () => {
+    RainforestGame.spendCredits(20);
+    RainforestGame.addData(2);
+    window.location.href = 'waterfall-recorder-video.html';
+  });
+  
+  document.getElementById('move-on-btn')?.addEventListener('click', () => {
+    window.location.href = 'move-on.html';
+  });
+});
+
+  </script>
+</body>
+</html>
