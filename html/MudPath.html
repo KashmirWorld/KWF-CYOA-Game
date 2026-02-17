@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="../css/alt-path-style.css">
+  <title>Path 3: Stuck in the Sludge</title>
+</head>
+<body>
+  <div class="top-left-image-container">
+  <img src="../Photos/IMG_9912.png" alt="Credits" width="40" height="40">
+  <span id="credits-readout">Credits: 0</span>
+  <span id="data-readout">Data: 0</span>
+  <img src="../Photos/data-icon.png" alt="Data" width="40" height="40">
+  </div>
+
+  <div class="top-right-timer-container">
+    <p>Time left: <span id="timer">00:10</span></p>
+  </div>
+
+  <div class="path-container">
+    <h1>Your fate is in your hands.</h1>
+
+    <!-- Left: Push Through the Mud (–5 Credits, –1 Data) -->
+    <div class="alt-left-button-container">
+      <button class="button" id="push-through-btn">
+        <img src="../Photos/Push through the mud.gif" height="350" alt="Push Through the Mud">
+      </button>
+      <p>Keep pushing forward<br><small>–5 Credits, –1 Data</small></p>
+    </div>
+
+    <!-- Middle: Back Out and Reroute (–10 Credits) -->
+    <div class="middle-button-container">
+      <button class="button" id="back-out-btn">
+        <img src="../Photos/Backup and reroute_2.gif" height="350" alt="Back Out and Reroute">
+      </button>
+      <p>Back out and reroute<br><small>–10 Credits</small></p>
+    </div>
+
+    <!-- Right: Request Rescue (–30 Credits) -->
+    <div class="alt-right-button-container">
+      <button class="button" id="request-rescue-btn">
+        <img src="../Photos/Request_Rescue.gif" height="350" alt="Request Rescue">
+      </button>
+      <p>Call for help from base camp<br><small>–30 Credits</small></p>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../JavaScript/game-state.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initial UI
+      RainforestGame.updateUI();
+
+      // Timer (10 seconds)
+      let timeLeft = 10;
+      const timerEl = document.getElementById('timer');
+      const timer = setInterval(() => {
+        timeLeft--;
+        if (timerEl) {
+          timerEl.textContent = `00:${timeLeft.toString().padStart(2, '0')}`;
+        }
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          // Default if time runs out: Back out and reroute
+          document.getElementById('back-out-btn')?.click();
+        }
+      }, 1000);
+
+      // Push Through the Mud (–5 Credits, –1 Data)
+      const pushBtn = document.getElementById('push-through-btn');
+      if (pushBtn) {
+        pushBtn.addEventListener('click', () => {
+          if (RainforestGame.canAfford(5)) {
+            RainforestGame.spendCredits(5);
+            RainforestGame.addData(-1);
+            RainforestGame.updateUI();
+            window.location.href = 'Push_Through_the_Mud.html';
+          } else {
+            alert('Not enough Credits (5 required).');
+          }
+        });
+      }
+
+      // Back Out and Reroute (–10 Credits)
+      const backBtn = document.getElementById('back-out-btn');
+      if (backBtn) {
+        backBtn.addEventListener('click', () => {
+          if (RainforestGame.canAfford(10)) {
+            RainforestGame.spendCredits(10);
+            RainforestGame.updateUI();
+            window.location.href = 'Back_Out_and_Reroute.html';
+          } else {
+            alert('Not enough Credits (10 required).');
+          }
+        });
+      }
+
+      // Request Rescue (–30 Credits)
+      const rescueBtn = document.getElementById('request-rescue-btn');
+      if (rescueBtn) {
+        rescueBtn.addEventListener('click', () => {
+          if (RainforestGame.canAfford(30)) {
+            RainforestGame.spendCredits(30);
+            RainforestGame.updateUI();
+            window.location.href = 'Request_Rescue.html';
+          } else {
+            alert('Not enough Credits (30 required).');
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

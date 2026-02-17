@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="C:\Users\laure\Dropbox\KashmirProject\KWF-CYOA-Game\css\story-style.css">
+  <meta charset="UTF-8" />
+  <title>Request Rescue</title>
+</head>
+<body>
+  <div class="container">
+    <h1>Request Rescue</h1>
+    <p>
+      You radio Tamandua Station. They send a recovery vehicle, but it costs both time and funding.
+    </p>
+    <p>
+      You made the safe call—but at a steep price.
+    </p>
+
+    <!-- Live credits/data display -->
+    <div id="stats-display" style="
+      background: rgba(0,0,0,0.8); 
+      color: white; 
+      padding: 12px; 
+      border-radius: 8px; 
+      margin: 20px 0;
+      font-family: system-ui, sans-serif;
+      text-align: center;
+    ">
+      <span id="credits-readout">Credits: 0</span> | 
+      <span id="data-readout">Data: 0</span>
+    </div>
+
+    <div class="button-container">
+      <button id="next-btn" class="button">Next</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../JavaScript/game-state.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Apply Request Rescue effects: -30 credits, data unchanged
+      if (typeof RainforestGame !== 'undefined') {
+        if (RainforestGame.canAfford(30)) {
+          RainforestGame.spendCredits(30);
+        }
+        RainforestGame.updateUI();
+      }
+
+      // Next button → Scene 4
+      const nextBtn = document.getElementById('next-btn');
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          if (typeof RainforestGame !== 'undefined') {
+            RainforestGame.updateUI();
+          }
+          window.location.href = 'Scene4.html';
+        });
+      }
+    });
+  </script>
+</body>
+</html>

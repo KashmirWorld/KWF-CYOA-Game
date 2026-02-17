@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="C:\Users\laure\Dropbox\KashmirProject\KWF-CYOA-Game\css\story-style.css">
+  <meta charset="UTF-8" />
+  <title>Scene 3</title>
+</head>
+<body>
+  <div class="container">
+    <h1>Scene 3: Stuck in the Sludge</h1>
+
+    <p>
+      The trail ahead is a mess. Thick rainforest rain turns the dirt into deep, clinging mud. 
+      Your research truck groans and slows—then sinks. Tires spin. You’re stuck. Again.
+    </p>
+    <p>
+      Everyone piles out. Boots sink. Hands grab tools. You’re wet, tired, and behind schedule. 
+      But no one says quit. You and your team have to make a call.
+    </p>
+
+    <!-- Live credits/data display -->
+    <div id="stats-display" style="
+      background: rgba(0,0,0,0.8); 
+      color: white; 
+      padding: 12px; 
+      border-radius: 8px; 
+      margin: 20px 0;
+      font-family: system-ui, sans-serif;
+      text-align: center;
+    ">
+      <span id="credits-readout">Credits: <span class="credits-value">$credits</span></span> | 
+      <span id="data-readout">Data: <span class="data-value">$data</span></span>
+    </div>
+
+    <div class="button-container">
+      <button id="next-btn" class="button">Next</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../JavaScript/game-state.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Update live stats display with game state
+      RainforestGame.updateUI();
+
+      // Next button → next scene (update filename as needed)
+      const nextBtn = document.getElementById('next-btn');
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          RainforestGame.updateUI(); // Final refresh before leaving
+          window.location.href = 'MudPath.html'; // or your next scene file
+        });
+      } else {
+        console.warn('Next button (#next-btn) not found');
+      }
+    });
+  </script>
+</body>
+</html>
