@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="C:\Users\laure\Dropbox\KashmirProject\KWF-CYOA-Game\css\story-style.css">
+  <meta charset="UTF-8" />
+  <title>Scene 4: Rainforest Night Survey</title>
+</head>
+<body>
+  <div class="container">
+    <h1>Scene 4: Rainforest Night Survey</h1>
+
+    <p>
+      As night falls over the rainforest, your team sets up camp. The forest comes alive in new ways—the hum of insects crescendos, 
+      frogs call from hidden pools, and the distant hoots and howls of nocturnal species echo through the trees.
+    </p>
+    <p>
+      You huddle over a laptop by red flashlight, reviewing the day’s footage and preparing for a rare chance to capture nocturnal data. 
+      The AI system needs night recordings to better recognize threats in low-light conditions.
+    </p>
+
+    <!-- Live credits/data display -->
+    <div id="stats-display" style="
+      background: rgba(0,0,0,0.8); 
+      color: white; 
+      padding: 12px; 
+      border-radius: 8px; 
+      margin: 20px 0;
+      font-family: system-ui, sans-serif;
+      text-align: center;
+    ">
+      <span id="credits-readout">Credits: <span class="credits-value">$credits</span></span> | 
+      <span id="data-readout">Data: <span class="data-value">$data</span></span>
+    </div>
+
+    <div class="button-container">
+      <button id="next-btn" class="button">Next</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../JavaScript/game-state.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Night survey is narrative only here: no automatic credits/data changes
+
+      // Update live stats display with game state
+      RainforestGame.updateUI();
+
+      // Next button → next scene or path (update filename as needed)
+      const nextBtn = document.getElementById('next-btn');
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          RainforestGame.updateUI(); // Final refresh before leaving
+          window.location.href = 'Scene4Path.html'; // Replace with your actual next page
+        });
+      } else {
+        console.warn('Next button (#next-btn) not found');
+      }
+    });
+  </script>
+</body>
+</html>

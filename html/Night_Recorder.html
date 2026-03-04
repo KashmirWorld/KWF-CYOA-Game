@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="C:\Users\laure\Dropbox\KashmirProject\KWF-CYOA-Game\css\story-style.css">
+  <meta charset="UTF-8" />
+  <title>Night Recorder</title>
+</head>
+<body>
+  <div class="container">
+    <h1>Night Recorder</h1>
+    <p>
+      You deploy a passive audio recorder and catch an astonishing range of rainforest sounds—owl calls, insect drones, and a distant chainsaw...
+    </p>
+    <p>
+      The AI flags it as potential illegal activity. This data could become vital.
+    </p>
+
+    <!-- Live credits/data display -->
+    <div id="stats-display" style="
+      background: rgba(0,0,0,0.8); 
+      color: white; 
+      padding: 12px; 
+      border-radius: 8px; 
+      margin: 20px 0;
+      font-family: system-ui, sans-serif;
+      text-align: center;
+    ">
+      <span id="credits-readout">Credits: 0</span> | 
+      <span id="data-readout">Data: 0</span>
+    </div>
+
+    <div class="button-container">
+      <button id="next-btn" class="button">Next</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../JavaScript/game-state.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Apply Night Recorder effects: -15 credits, +2 data
+      if (typeof RainforestGame !== 'undefined') {
+        if (RainforestGame.canAfford(15)) {
+          RainforestGame.spendCredits(15);
+        }
+        RainforestGame.addData(2);
+        RainforestGame.updateUI();
+      }
+
+      // Next button → Scene 5 (or your next page)
+      const nextBtn = document.getElementById('next-btn');
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          if (typeof RainforestGame !== 'undefined') {
+            RainforestGame.updateUI();
+          }
+          window.location.href = 'Scene5.html';
+        });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="C:\Users\laure\Dropbox\KashmirProject\KWF-CYOA-Game\css\story-style.css">
+  <meta charset="UTF-8" />
+  <title>Rest & Review</title>
+</head>
+<body>
+  <div class="container">
+    <h1>Rest & Review</h1>
+    <p>
+      You decide to rest and go over the day's data. Though no new data is collected, 
+      your analysis helps clarify existing patterns.
+    </p>
+
+    <!-- Live credits/data display -->
+    <div id="stats-display" style="
+      background: rgba(0,0,0,0.8); 
+      color: white; 
+      padding: 12px; 
+      border-radius: 8px; 
+      margin: 20px 0;
+      font-family: system-ui, sans-serif;
+      text-align: center;
+    ">
+      <span id="credits-readout">Credits: 0</span> | 
+      <span id="data-readout">Data: 0</span>
+    </div>
+
+    <div class="button-container">
+      <button id="next-btn" class="button">Next</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../JavaScript/game-state.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Apply Rest & Review effects: +1 data (no credit cost)
+      if (typeof RainforestGame !== 'undefined') {
+        RainforestGame.addData(1);
+        RainforestGame.updateUI();
+      }
+
+      // Next button → Scene 5 (or your next page)
+      const nextBtn = document.getElementById('next-btn');
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          if (typeof RainforestGame !== 'undefined') {
+            RainforestGame.updateUI();
+          }
+          window.location.href = 'Scene5.html';
+        });
+      }
+    });
+  </script>
+</body>
+</html>
