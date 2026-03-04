@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="../css/alt-path-style.css">
+  <title>Path 4: Night Survey Choices</title>
+</head>
+<body>
+  <div class="top-left-image-container">
+    <img src="../Photos/IMG_9912.png" alt="Credits" width="40" height="40">
+    <span id="credits-readout">Credits: 0</span>
+    <span id="data-readout">Data: 0</span>
+    <img src="../Photos/data-icon.png" alt="Data" width="40" height="40">
+  </div>
+
+  <div class="top-right-timer-container">
+    <p>Time left: <span id="timer">00:10</span></p>
+  </div>
+
+  <div class="path-container">
+    <h1>What will you do with the final hours of your expedition?</h1>
+
+    <!-- Left: Night Vision Camera Trap (-20 Credits) -->
+    <div class="alt-left-button-container">
+      <button class="button" id="night-camera-btn">
+        <img src="../Photos/Night_Camera_Trap.gif" height="350" alt="Night Vision Camera Trap">
+      </button>
+      <p>Deploy Night Vision Camera Trap<br><small>-20 Credits</small></p>
+    </div>
+
+    <!-- Middle: Passive Audio Recorder (-15 Credits) -->
+    <div class="middle-button-container">
+      <button class="button" id="night-recorder-btn">
+        <img src="../Photos/Night_Passive_Audio_Recorder.gif" height="350" alt="Passive Audio Recorder">
+      </button>
+      <p>Set up Passive Audio Recorder<br><small>-15 Credits</small></p>
+    </div>
+
+    <!-- Right: Rest and Review (Free) -->
+    <div class="alt-right-button-container">
+      <button class="button" id="rest-review-btn">
+        <img src="../Photos/Rest_and_Review.gif" height="350" alt="Rest and Review">
+      </button>
+      <p>Rest and Review Data</p>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../JavaScript/game-state.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initial UI
+      RainforestGame.updateUI();
+
+      // Timer (10 seconds)
+      let timeLeft = 10;
+      const timerEl = document.getElementById('timer');
+      const timer = setInterval(() => {
+        timeLeft--;
+        if (timerEl) {
+          timerEl.textContent = `00:${timeLeft.toString().padStart(2, '0')}`;
+        }
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          // Default if time runs out: Rest and Review
+          document.getElementById('rest-review-btn')?.click();
+        }
+      }, 1000);
+
+      // Night Vision Camera Trap (-20 Credits), only if credits > 19
+      const nightCamBtn = document.getElementById('night-camera-btn');
+      if (nightCamBtn) {
+        if (!RainforestGame.canAfford(20)) {
+          // Disable if player cannot afford
+          nightCamBtn.disabled = true;
+          nightCamBtn.style.opacity = '0.5';
+          nightCamBtn.title = 'Requires 20 Credits';
+        } else {
+          nightCamBtn.addEventListener('click', () => {
+            if (RainforestGame.canAfford(20)) {
+              RainforestGame.spendCredits(20);
+              RainforestGame.updateUI();
+              window.location.href = 'Night_Camera_Trap.html';
+            } else {
+              alert('Not enough Credits (20 required).');
+            }
+          });
+        }
+      }
+
+      // Passive Audio Recorder (-15 Credits), only if credits > 14
+      const nightRecBtn = document.getElementById('night-recorder-btn');
+      if (nightRecBtn) {
+        if (!RainforestGame.canAfford(15)) {
+          nightRecBtn.disabled = true;
+          nightRecBtn.style.opacity = '0.5';
+          nightRecBtn.title = 'Requires 15 Credits';
+        } else {
+          nightRecBtn.addEventListener('click', () => {
+            if (RainforestGame.canAfford(15)) {
+              RainforestGame.spendCredits(15);
+              RainforestGame.updateUI();
+              window.location.href = 'Night_Recorder.html';
+            } else {
+              alert('Not enough Credits (15 required).');
+            }
+          });
+        }
+      }
+
+      // Rest and Review Data (free, always available)
+      const restBtn = document.getElementById('rest-review-btn');
+      if (restBtn) {
+        restBtn.addEventListener('click', () => {
+          RainforestGame.updateUI();
+          window.location.href = 'Rest_and_Review.html';
+        });
+      }
+    });
+  </script>
+</body>
+</html>

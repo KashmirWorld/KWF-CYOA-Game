@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="C:\Users\laure\Dropbox\KashmirProject\KWF-CYOA-Game\css\story-style.css">
+  <meta charset="UTF-8" />
+  <title>Night Camera Trap</title>
+</head>
+<body>
+  <div class="container">
+    <h1>Night Camera Trap</h1>
+    <p>
+      You set up a camera trap with infrared capabilities. Hours later, it captures stunning footage: 
+      a tapir silently moving through the underbrush, and something unexpected—an ocelot trailing behind.
+    </p>
+    <p>
+      This rare footage could reshape your research model.
+    </p>
+
+    <!-- Live credits/data display -->
+    <div id="stats-display" style="
+      background: rgba(0,0,0,0.8); 
+      color: white; 
+      padding: 12px; 
+      border-radius: 8px; 
+      margin: 20px 0;
+      font-family: system-ui, sans-serif;
+      text-align: center;
+    ">
+      <span id="credits-readout">Credits: 0</span> | 
+      <span id="data-readout">Data: 0</span>
+    </div>
+
+    <div class="button-container">
+      <button id="next-btn" class="button">Next</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../JavaScript/game-state.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Apply Night Camera Trap effects: -20 credits, +3 data
+      if (typeof RainforestGame !== 'undefined') {
+        if (RainforestGame.canAfford(20)) {
+          RainforestGame.spendCredits(20);
+        }
+        RainforestGame.addData(3);
+        RainforestGame.updateUI();
+      }
+
+      // Next button → Scene 5 (or your next page)
+      const nextBtn = document.getElementById('next-btn');
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          if (typeof RainforestGame !== 'undefined') {
+            RainforestGame.updateUI();
+          }
+          window.location.href = 'Scene5.html';
+        });
+      }
+    });
+  </script>
+</body>
+</html>
