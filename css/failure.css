@@ -1,0 +1,80 @@
+body {
+    background-image: url("../Videos/Ending1_FINAL_GIF.gif");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
+
+.container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(240, 248, 255, 0.95);
+    width: 600px;
+    height: 500px;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 100, 0, 0.3);
+    text-align: center;
+}
+
+h1 {
+    color: #8B0000;
+    font-size: 48px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    margin: 0 0 30px 0;
+    font-family: 'Times New Roman', serif;
+    letter-spacing: 2px;
+}
+
+.body-text {
+    color: #228B22; /* Forest green */
+    font-size: 18px;
+    line-height: 1.6;
+    text-align: left;
+    margin: 0 auto 40px;
+    max-width: 500px;
+}
+
+.body-text p {
+    margin: 15px 0;
+    padding: 0;
+    color: #175d17; /* Lime green */
+}
+
+.try-again-btn {
+    background-color: #006400; /* Dark green */
+    color: #90EE90; /* Light green text */
+    border: none;
+    padding: 18px 45px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 100, 0, 0.4);
+}
+
+.try-again-btn:hover {
+    background-color: #008000; /* Green */
+    color: #F0FFF0; /* Honeydew */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 100, 0, 0.6);
+}
+
+.try-again-btn:active {
+    background-color: #006400;
+    color: #90EE90;
+    box-shadow: 0 3px 10px rgba(0, 100, 0, 0.4);
+    transform: translateY(0);
+}
