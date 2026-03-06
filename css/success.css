@@ -1,0 +1,125 @@
+body {
+    background-image: none; /* Video covers initially */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    transition: background-image 2s ease-in;
+}
+
+.fullscreen-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    opacity: 1;
+    transition: opacity 2s ease-out;
+}
+
+.fullscreen-video video {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+}
+
+.container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(240, 248, 255, 0.98);
+    width: 650px;
+    height: 550px;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 128, 0, 0.4);
+    text-align: center;
+}
+
+h1 {
+    color: #32CD32; /* Bright lime green for success */
+    font-size: 52px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    margin: 0 0 25px 0;
+    font-family: 'Georgia', serif;
+    letter-spacing: 3px;
+}
+
+.body-text {
+    color: #006400; /* Dark green */
+    font-size: 18px;
+    line-height: 1.6;
+    text-align: left;
+    margin: 0 auto 35px;
+    max-width: 550px;
+    font-family: 'Times New Roman', serif;
+}
+
+.body-text p {
+    margin: 12px 0;
+    padding: 0;
+    color: #228B22; /* Forest green */
+}
+
+.try-again-btn {
+    background-color: #32CD32; /* Bright success green */
+    color: white;
+    border: none;
+    padding: 20px 50px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 20px rgba(50, 205, 50, 0.4);
+}
+
+.try-again-btn:hover {
+    background-color: #00FF00; /* Vibrant green */
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(50, 205, 50, 0.6);
+}
+
+.try-again-btn:active {
+    background-color: #32CD32;
+    box-shadow: 0 4px 15px rgba(50, 205, 50, 0.4);
+    transform: translateY(0);
+}
+/* Add this to your existing success.css */
+.skip-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(50, 205, 50, 0.9);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    z-index: 1001;
+}
+
+.skip-button:hover {
+    background-color: rgba(0, 255, 0, 0.95);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+
+.skip-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}

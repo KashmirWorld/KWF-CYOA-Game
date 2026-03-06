@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Success Ending</title>
+    <link rel="stylesheet" href="../css/success.css">
+</head>
+<body>
+    <!-- Video plays first, then fades to ending screen -->
+    <div id="video-screen" class="fullscreen-video">
+        <video id="success-video" autoplay muted playsinline>
+            <source src="../Videos/Video Tamandua 2021.mov" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        
+        <!-- Skip button overlay -->
+        <button id="skip-btn" class="skip-button">Skip Video (1:29)</button>
+    </div>
+    
+    <!-- Ending screen - hidden initially -->
+    <div id="ending-screen" class="container" style="display: none;">
+        <h1>SUCCESS</h1>
+        <div class="body-text">
+            <p>Your expedition was a resounding success!</p>
+            <p>Through strategic decision-making and resource management, you gathered high-quality data that will directly contribute to AI-driven conservation efforts.</p>
+            <p>Your research team is thrilled with your findings, and your work will help protect endangered wildlife for years to come.</p>
+            <p>The KWF has approved additional funding for future expeditions, ensuring that this is just the beginning of your impact on rainforest conservation!</p>
+            <p>Well done, researcher!</p>
+        </div>
+        <a href="story1.html" class="try-again-btn">Replay</a>
+    </div>
+    
+    <script>
+        // Video controls with skip functionality
+        window.addEventListener('load', function() {
+            const video = document.getElementById('success-video');
+            const videoScreen = document.getElementById('video-screen');
+            const endingScreen = document.getElementById('ending-screen');
+            const skipBtn = document.getElementById('skip-btn');
+            
+            let videoTimer;
+            
+            function fadeToEnding() {
+                // Fade out video screen
+                videoScreen.style.opacity = '0';
+                videoScreen.style.transition = 'opacity 2s ease-out';
+                
+                // Fade in ending screen after fade out completes
+                setTimeout(function() {
+                    videoScreen.style.display = 'none';
+                    endingScreen.style.display = 'block';
+                    document.body.style.backgroundImage = 'url("../Videos/Ending2_FINAL_GIF.gif")';
+                }, 2000);
+            }
+            
+            // Auto-play full video (89s) then transition
+            video.addEventListener('loadeddata', function() {
+                videoTimer = setTimeout(fadeToEnding, 89000); // 1:29
+            });
+            
+            // Skip button functionality
+            skipBtn.addEventListener('click', function() {
+                clearTimeout(videoTimer);
+                fadeToEnding();
+            });
+            
+            // Optional: Keyboard skip (ESC key)
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    clearTimeout(videoTimer);
+                    fadeToEnding();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
