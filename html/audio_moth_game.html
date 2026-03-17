@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Minigame 2 – Audio Moth Placement</title>
+  <link rel="stylesheet" href="../css/audio_moth.css" />
+</head>
+<body>
+  <!-- Global header / HUD -->
+  <header class="global-header">
+  <div class="global-readouts">
+    <span class="hud-item">
+      <img src="../Photos/IMG_9912.png" alt="Credits" class="hud-icon" />
+      <span id="credits-readout">0</span>
+    </span>
+    <span class="hud-item">
+      <img src="../Photos/IMG_9974.png" alt="Data" class="hud-icon" />
+      <span id="data-readout">0</span>
+    </span>
+  </div>
+  <nav class="global-nav">
+    <a href="index.html" class="am-button am-button-primary back-button">
+      Back to Lab
+    </a>
+  </nav>
+</header>
+
+
+  <!-- Minigame container -->
+  <main>
+    <div id="audio-moth-game" class="am-game">
+      <div class="am-header">
+        <h2>Minigame 2: Audio Moth Placement</h2>
+        <div class="am-info">
+          <span class="am-data-display">
+            Minigame Data: <span id="am-data-value">0</span>
+          </span>
+          <span class="am-timer hud-item">
+            <img src="../Photos/IMG_9911.png" alt="Timer" class="hud-icon" />
+            <span id="am-timer-value">05:00</span>
+          </span>
+        </div>
+      </div>
+
+      <div class="am-layout">
+        <!-- Map -->
+        <div class="am-map">
+          <div class="am-drop-zone" data-zone-id="1" data-eval="optimal"
+               data-issue=""
+               style="top: 20%; left: 25%;">
+            <span class="am-zone-label">A</span>
+          </div>
+
+          <div class="am-drop-zone" data-zone-id="2" data-eval="suboptimal"
+               data-issue="too close to the main human path, which increases disturbance risk and discovery by poachers."
+               style="top: 35%; left: 60%;">
+            <span class="am-zone-label">B</span>
+          </div>
+
+          <div class="am-drop-zone" data-zone-id="3" data-eval="optimal"
+               data-issue=""
+               style="top: 55%; left: 40%;">
+            <span class="am-zone-label">C</span>
+          </div>
+
+          <div class="am-drop-zone" data-zone-id="4" data-eval="bad"
+               data-issue="directly under large leaves that will block sound and drip rain noise onto the recorder."
+               style="top: 70%; left: 18%;">
+            <span class="am-zone-label">D</span>
+          </div>
+
+          <div class="am-drop-zone" data-zone-id="5" data-eval="bad"
+               data-issue="too exposed to rain and wind on the forest edge, which can damage the device and add noise."
+               style="top: 70%; left: 70%;">
+            <span class="am-zone-label">E</span>
+          </div>
+
+          <div class="am-drop-zone" data-zone-id="6" data-eval="suboptimal"
+               data-issue="too low to the ground, where animals and flooding can reach it easily."
+               style="top: 45%; left: 10%;">
+            <span class="am-zone-label">F</span>
+          </div>
+        </div>
+
+        <!-- Panel -->
+        <div class="am-panel">
+          <div class="am-instructions">
+            Drag and drop the Audio Moth recorders onto the best locations in the rainforest.
+            Only some spots are optimal. Think about wildlife corridors, human paths, weather protection, height, and concealment.
+          </div>
+
+          <div class="am-recorder-list">
+            <div class="am-recorder" id="am-rec-1" draggable="true" data-points="2">
+              Recorder 1
+            </div>
+            <div class="am-recorder" id="am-rec-2" draggable="true" data-points="2">
+              Recorder 2
+            </div>
+            <div class="am-recorder" id="am-rec-3" draggable="true" data-points="1">
+              Recorder 3
+            </div>
+          </div>
+
+          <button id="am-reset-btn" class="am-button">Reset placements</button>
+          <button id="am-finish-btn" class="am-button am-button-primary">Finish minigame</button>
+
+          <div id="am-feedback" class="am-feedback"></div>
+        </div>
+      </div>
+
+      <!-- Popup modal -->
+      <div id="am-popup" class="am-popup hidden">
+        <div class="am-popup-content">
+          <h3 id="am-popup-title">Placement feedback</h3>
+          <p id="am-popup-body"></p>
+          <button id="am-popup-close" class="am-button am-button-primary">OK</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script src="../JavaScript/game-state.js"></script>
+  <script src="../JavaScript/audio-moth.js"></script>
+  <script>
+    // Initialize global state for this page
+    window.RainforestGame.initState(100, 0);
+    window.RainforestGame.updateUI();
+  </script>
+</body>
+</html>
