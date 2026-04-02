@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Conservation Quiz Challenge</title>
+  <style>
+    :root {
+      --bg-deep: #0f4f3e;
+      --bg-mid: #166b52;
+      --panel: #ffffff;
+      --panel-soft: #e8f4f1;
+      --ink: #05303b;
+      --primary: #145c4b;
+      --primary-strong: #0e493b;
+      --accent: #ffeb3b;
+      --success: #4caf50;
+      --danger: #f44336;
+      --shadow: rgba(0, 0, 0, 0.18);
+      --radius: 10px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, sans-serif;
+      color: var(--ink);
+      background-image:
+        linear-gradient(90deg, rgba(0,0,0,0.06) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(0,0,0,0.06) 1px, transparent 1px),
+        linear-gradient(135deg, var(--bg-deep) 25%, var(--bg-mid) 25%, var(--bg-mid) 50%, var(--bg-deep) 50%, var(--bg-deep) 75%, var(--bg-mid) 75%, var(--bg-mid) 100%);
+      background-size: 32px 32px, 32px 32px, 64px 64px;
+      min-height: 100vh;
+    }
+
+    .hidden { display: none !important; }
+
+    .quiz-game {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    .global-header,
+    .quiz-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .global-header {
+      margin-bottom: 12px;
+    }
+
+    .global-readouts,
+    .quiz-meta {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .hud-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.95rem;
+      color: #ffffff;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 8px 12px;
+      border-radius: 999px;
+      backdrop-filter: blur(4px);
+    }
+
+    .quiz-shell {
+      background: rgba(255, 255, 255, 0.96);
+      border: 3px solid var(--primary);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.22);
+    }
+
+    .quiz-header {
+      padding: 16px;
+      background: var(--panel-soft);
+      border-bottom: 2px solid rgba(20, 92, 75, 0.14);
+    }
+
+    .quiz-header h1 {
+      margin: 0;
+      color: var(--primary);
+      font-size: 1.6rem;
+    }
+
+    .quiz-header p {
+      margin: 4px 0 0;
+      font-size: 0.95rem;
+    }
+
+    .quiz-layout {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 16px;
+      padding: 16px;
+    }
+
+    .quiz-card,
+    .sidebar-card,
+    .result-card {
+      background: var(--panel);
+      border: 2px solid var(--primary);
+      border-radius: 8px;
+      box-shadow: 0 4px 0 var(--shadow);
+    }
+
+    .quiz-card,
+    .result-card {
+      padding: 18px;
+    }
+
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .sidebar-card {
+      padding: 14px;
+    }
+
+    .sidebar-card h3 {
+      margin: 0 0 8px;
+      color: var(--primary);
+      font-size: 1rem;
+    }
+
+    .sidebar-card p,
+    .sidebar-card li,
+    .result-card p,
+    .quiz-card p {
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .question-chip {
+      display: inline-block;
+      margin-bottom: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--panel-soft);
+      border: 1px solid rgba(20, 92, 75, 0.2);
+      color: var(--primary);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .question-text {
+      margin: 0 0 14px;
+      font-size: 1.35rem;
+      line-height: 1.25;
+      color: var(--ink);
+    }
+
+    .question-context {
+      margin: 0 0 18px;
+      color: #35545c;
+    }
+
+    .choice-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .choice-btn,
+    .am-button,
+    .text-submit {
+      border-radius: 8px;
+      border: 2px solid var(--primary);
+      background: #ffffff;
+      color: var(--primary);
+      cursor: pointer;
+      transition: transform 0.12s, box-shadow 0.12s, background-color 0.12s, border-color 0.12s;
+    }
+
+    .choice-btn {
+      width: 100%;
+      text-align: left;
+      padding: 14px;
+      font-size: 1rem;
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.14);
+    }
+
+    .choice-btn:hover,
+    .choice-btn:focus-visible,
+    .am-button:hover,
+    .text-submit:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 5px 12px rgba(20, 92, 75, 0.18);
+    }
+
+    .choice-btn.selected {
+      background: rgba(255, 235, 59, 0.25);
+      border-color: #d1b800;
+    }
+
+    .choice-btn.correct {
+      background: rgba(76, 175, 80, 0.18);
+      border-color: var(--success);
+      color: #1f5e22;
+    }
+
+    .choice-btn.wrong {
+      background: rgba(244, 67, 54, 0.15);
+      border-color: var(--danger);
+      color: #93261f;
+    }
+
+    .free-response-wrap {
+      display: grid;
+      gap: 10px;
+    }
+
+    .free-response {
+      width: 100%;
+      min-height: 140px;
+      resize: vertical;
+      border: 2px solid var(--primary);
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 1rem;
+      font-family: inherit;
+      background: #fff;
+      color: var(--ink);
+    }
+
+    .free-response:focus-visible {
+      outline: 3px solid rgba(255, 235, 59, 0.55);
+      outline-offset: 2px;
+    }
+
+    .answer-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    .am-button {
+      padding: 10px 14px;
+      font-size: 0.95rem;
+    }
+
+    .am-button-primary,
+    .text-submit {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    .am-button:disabled,
+    .text-submit:disabled {
+      opacity: 0.6;
+      cursor: default;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .feedback {
+      min-height: 64px;
+      margin-top: 14px;
+      border-radius: 8px;
+      padding: 12px 14px;
+      background: #f8fbfa;
+      border: 1px solid rgba(20, 92, 75, 0.14);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .feedback.success {
+      background: rgba(76, 175, 80, 0.12);
+      border-color: rgba(76, 175, 80, 0.45);
+    }
+
+    .feedback.error {
+      background: rgba(244, 67, 54, 0.1);
+      border-color: rgba(244, 67, 54, 0.35);
+    }
+
+    .feedback.info {
+      background: rgba(232, 244, 241, 0.9);
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 12px;
+      border-radius: 999px;
+      background: #dbece7;
+      overflow: hidden;
+      border: 1px solid rgba(20, 92, 75, 0.15);
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #145c4b, #4caf50);
+      transition: width 0.25s ease;
+    }
+
+    .legend-list,
+    .fact-list {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .result-card h2 {
+      margin: 0 0 10px;
+      color: var(--primary);
+    }
+
+    .result-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .stat-box {
+      border-radius: 8px;
+      background: var(--panel-soft);
+      border: 1px solid rgba(20, 92, 75, 0.14);
+      padding: 12px;
+      text-align: center;
+    }
+
+    .stat-box strong {
+      display: block;
+      font-size: 1.4rem;
+      color: var(--primary);
+    }
+
+    .review-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .review-item {
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(20, 92, 75, 0.14);
+      background: #fbfdfc;
+    }
+
+    .review-item.correct {
+      border-color: rgba(76, 175, 80, 0.45);
+      background: rgba(76, 175, 80, 0.08);
+    }
+
+    .review-item.wrong {
+      border-color: rgba(244, 67, 54, 0.35);
+      background: rgba(244, 67, 54, 0.06);
+    }
+
+    @media (max-width: 860px) {
+      .quiz-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .result-stats {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="quiz-game" id="conservation-quiz-game">
+    <div class="global-header">
+      <div class="global-readouts">
+        <div class="hud-item" id="credits-readout">Credits: 100</div>
+        <div class="hud-item" id="data-readout">Data: 0</div>
+      </div>
+      <div class="hud-item" id="quiz-pack-readout">Quiz Pack: Rainforest Basics</div>
+    </div>
+
+    <section class="quiz-shell">
+      <div class="quiz-header">
+        <div>
+          <h1>Quiz / Knowledge Challenge</h1>
+          <p>Answer conservation questions correctly to earn Data points for your expedition.</p>
+        </div>
+        <div class="quiz-meta">
+          <div class="hud-item" id="question-counter">Question 1 / 4</div>
+          <div class="hud-item" id="earned-readout">Earned this run: 0 Data</div>
+        </div>
+      </div>
+
+      <div class="quiz-layout">
+        <section class="quiz-card" id="play-view" aria-live="polite">
+          <div class="question-chip" id="question-type-chip">Multiple Choice</div>
+          <h2 class="question-text" id="question-text"></h2>
+          <p class="question-context" id="question-context"></p>
+
+          <div id="choice-area" class="choice-list"></div>
+
+          <div id="free-response-area" class="free-response-wrap hidden">
+            <label for="free-response" class="sr-only">Type your answer</label>
+            <textarea id="free-response" class="free-response" placeholder="Explain your answer in one or two sentences."></textarea>
+            <button class="text-submit" id="submit-text-answer">Submit Answer</button>
+          </div>
+
+          <div class="answer-actions">
+            <button class="am-button am-button-primary" id="check-answer">Check Answer</button>
+            <button class="am-button" id="next-question" disabled>Next Question</button>
+            <button class="am-button" id="restart-quiz">Restart Quiz</button>
+          </div>
+
+          <div class="feedback info" id="feedback-box">Read the clue, choose an answer, and collect Data with each correct response.</div>
+        </section>
+
+        <aside class="sidebar">
+          <section class="sidebar-card">
+            <h3>Progress</h3>
+            <div class="progress-track" aria-hidden="true">
+              <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <p id="progress-label">0 of 4 questions completed.</p>
+          </section>
+
+          <section class="sidebar-card">
+            <h3>How rewards work</h3>
+            <ul class="legend-list">
+              <li>Correct answers add Data points.</li>
+              <li>Incorrect answers add nothing.</li>
+              <li>Each quiz pack can have its own reward values.</li>
+            </ul>
+          </section>
+
+          <section class="sidebar-card">
+            <h3>Why this is easy to expand</h3>
+            <ul class="fact-list">
+              <li>Questions live in one data array.</li>
+              <li>Supports both multiple choice and short response.</li>
+              <li>Swap the quiz pack object to create the next three quizzes.</li>
+            </ul>
+          </section>
+        </aside>
+      </div>
+
+      <section class="result-card hidden" id="results-view">
+        <h2>Field Debrief</h2>
+        <p id="results-summary"></p>
+        <div class="result-stats">
+          <div class="stat-box"><span>Correct</span><strong id="correct-total">0</strong></div>
+          <div class="stat-box"><span>Questions</span><strong id="question-total">0</strong></div>
+          <div class="stat-box"><span>Data Earned</span><strong id="data-earned-total">0</strong></div>
+        </div>
+        <div class="answer-actions">
+          <button class="am-button am-button-primary" id="play-again">Play Again</button>
+        </div>
+        <div class="review-list" id="review-list"></div>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    window.RainforestGame = window.RainforestGame || {};
+
+    (function (game) {
+      const hasStateModule = typeof game.initState === 'function';
+      const state = {
+        credits: 100,
+        data: 0
+      };
+
+      function updateFallbackUI() {
+        const creditsEl = document.getElementById('credits-readout');
+        const dataEl = document.getElementById('data-readout');
+        if (creditsEl) creditsEl.textContent = `Credits: ${state.credits}`;
+        if (dataEl) dataEl.textContent = `Data: ${state.data}`;
+      }
+
+      if (!hasStateModule) {
+        game.initState = function (defaultCredits = 100, defaultData = 0) {
+          state.credits = defaultCredits;
+          state.data = defaultData;
+        };
+        game.getCredits = function () { return state.credits; };
+        game.getData = function () { return state.data; };
+        game.addData = function (delta) { state.data += delta; };
+        game.updateUI = updateFallbackUI;
+      }
+    })(window.RainforestGame);
+  </script>
+
+  <script>
+    const quizPacks = {
+      rainforestBasics: {
+        id: 'rainforestBasics',
+        title: 'Rainforest Basics',
+        intro: 'Foundational conservation concepts focused on species behavior, threats, and habitat protection.',
+        questions: [
+          {
+            id: 'q1',
+            type: 'multiple-choice',
+            prompt: 'Why are top predators important in a rainforest ecosystem?',
+            context: 'Think about what happens when one major species disappears from the food web.',
+            options: [
+              'They keep prey populations in balance and help stabilize the food web.',
+              'They turn sunlight directly into plant energy.',
+              'They only matter during the dry season.',
+              'They make rivers flow faster through the forest.'
+            ],
+            correctIndex: 0,
+            reward: 3,
+            explanation: 'Top predators regulate prey populations, which helps prevent cascading imbalances across the ecosystem.'
+          },
+          {
+            id: 'q2',
+            type: 'multiple-choice',
+            prompt: 'Which threat usually causes the largest direct loss of rainforest habitat?',
+            context: 'Choose the option that most directly removes the forest itself.',
+            options: [
+              'Selective bird migration',
+              'Deforestation for logging or agriculture',
+              'Seasonal fruit production',
+              'Natural seed dispersal by animals'
+            ],
+            correctIndex: 1,
+            reward: 3,
+            explanation: 'Deforestation clears habitat outright, shrinking living space for many species at once.'
+          },
+          {
+            id: 'q3',
+            type: 'free-response',
+            prompt: 'A monkey species suddenly avoids a noisy logging area. What behavior change is it showing, and why might that matter for conservation?',
+            context: 'Mention both the behavior and one conservation impact in your answer.',
+            reward: 4,
+            acceptableKeywords: ['avoid', 'move', 'leave', 'disturb', 'noise', 'habitat', 'stress', 'feeding', 'nesting'],
+            minimumKeywordMatches: 2,
+            explanation: 'This is disturbance-driven behavior change. When animals avoid noisy areas, they may lose feeding, nesting, or breeding space.'
+          },
+          {
+            id: 'q4',
+            type: 'multiple-choice',
+            prompt: 'What is one reason biodiversity makes an ecosystem more resilient?',
+            context: 'Think about how many species can share jobs in an ecosystem.',
+            options: [
+              'It guarantees that no species will ever go extinct.',
+              'It gives the ecosystem multiple species that can support key roles if conditions change.',
+              'It prevents all storms and droughts.',
+              'It makes every animal eat the same food source.'
+            ],
+            correctIndex: 1,
+            reward: 5,
+            explanation: 'High biodiversity spreads ecological roles across many organisms, so the system can better absorb change.'
+          }
+        ]
+      }
+    };
+
+    const state = {
+      pack: quizPacks.rainforestBasics,
+      currentIndex: 0,
+      selectedChoice: null,
+      answers: [],
+      earnedData: 0,
+      locked: false
+    };
+
+    const els = {
+      questionTypeChip: document.getElementById('question-type-chip'),
+      questionText: document.getElementById('question-text'),
+      questionContext: document.getElementById('question-context'),
+      choiceArea: document.getElementById('choice-area'),
+      freeResponseArea: document.getElementById('free-response-area'),
+      freeResponse: document.getElementById('free-response'),
+      checkAnswer: document.getElementById('check-answer'),
+      nextQuestion: document.getElementById('next-question'),
+      restartQuiz: document.getElementById('restart-quiz'),
+      feedbackBox: document.getElementById('feedback-box'),
+      progressBar: document.getElementById('progress-bar'),
+      progressLabel: document.getElementById('progress-label'),
+      questionCounter: document.getElementById('question-counter'),
+      earnedReadout: document.getElementById('earned-readout'),
+      resultsView: document.getElementById('results-view'),
+      playView: document.getElementById('play-view'),
+      resultsSummary: document.getElementById('results-summary'),
+      correctTotal: document.getElementById('correct-total'),
+      questionTotal: document.getElementById('question-total'),
+      dataEarnedTotal: document.getElementById('data-earned-total'),
+      reviewList: document.getElementById('review-list'),
+      playAgain: document.getElementById('play-again'),
+      quizPackReadout: document.getElementById('quiz-pack-readout'),
+      submitTextAnswer: document.getElementById('submit-text-answer')
+    };
+
+    function initGame() {
+      window.RainforestGame.initState(100, 0);
+      window.RainforestGame.updateUI();
+      els.quizPackReadout.textContent = `Quiz Pack: ${state.pack.title}`;
+      bindEvents();
+      renderQuestion();
+    }
+
+    function bindEvents() {
+      els.checkAnswer.addEventListener('click', handleCheckAnswer);
+      els.nextQuestion.addEventListener('click', handleNextQuestion);
+      els.restartQuiz.addEventListener('click', restartQuiz);
+      els.playAgain.addEventListener('click', restartQuiz);
+      els.submitTextAnswer.addEventListener('click', handleCheckAnswer);
+    }
+
+    function getCurrentQuestion() {
+      return state.pack.questions[state.currentIndex];
+    }
+
+    function renderQuestion() {
+      const question = getCurrentQuestion();
+      state.selectedChoice = null;
+      state.locked = false;
+      els.checkAnswer.disabled = false;
+      els.nextQuestion.disabled = true;
+      els.feedbackBox.className = 'feedback info';
+      els.feedbackBox.textContent = 'Study the clue, then submit your best answer.';
+      els.questionTypeChip.textContent = question.type === 'free-response' ? 'Free Response' : 'Multiple Choice';
+      els.questionText.textContent = question.prompt;
+      els.questionContext.textContent = question.context || '';
+      els.questionCounter.textContent = `Question ${state.currentIndex + 1} / ${state.pack.questions.length}`;
+      els.earnedReadout.textContent = `Earned this run: ${state.earnedData} Data`;
+      updateProgress();
+
+      if (question.type === 'multiple-choice') {
+        renderChoices(question);
+        els.choiceArea.classList.remove('hidden');
+        els.freeResponseArea.classList.add('hidden');
+        els.freeResponse.value = '';
+      } else {
+        els.choiceArea.innerHTML = '';
+        els.choiceArea.classList.add('hidden');
+        els.freeResponseArea.classList.remove('hidden');
+        els.freeResponse.value = '';
+      }
+    }
+
+    function renderChoices(question) {
+      els.choiceArea.innerHTML = '';
+      question.options.forEach((option, index) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'choice-btn';
+        button.textContent = option;
+        button.addEventListener('click', () => selectChoice(index, button));
+        els.choiceArea.appendChild(button);
+      });
+    }
+
+    function selectChoice(index, button) {
+      if (state.locked) return;
+      state.selectedChoice = index;
+      [...els.choiceArea.children].forEach((child, childIndex) => {
+        child.classList.toggle('selected', childIndex === index);
+      });
+    }
+
+    function handleCheckAnswer() {
+      if (state.locked) return;
+      const question = getCurrentQuestion();
+      let result;
+
+      if (question.type === 'multiple-choice') {
+        if (state.selectedChoice === null) {
+          showFeedback('Choose one answer before checking.', 'error');
+          return;
+        }
+        result = gradeMultipleChoice(question);
+      } else {
+        const text = els.freeResponse.value.trim();
+        if (!text) {
+          showFeedback('Write a short response before submitting.', 'error');
+          return;
+        }
+        result = gradeFreeResponse(question, text);
+      }
+
+      applyResult(question, result);
+    }
+
+    function gradeMultipleChoice(question) {
+      const isCorrect = state.selectedChoice === question.correctIndex;
+      return {
+        isCorrect,
+        playerAnswer: question.options[state.selectedChoice],
+        correctAnswer: question.options[question.correctIndex]
+      };
+    }
+
+    function gradeFreeResponse(question, text) {
+      const normalized = text.toLowerCase();
+      const matches = question.acceptableKeywords.filter(keyword => normalized.includes(keyword)).length;
+      const isCorrect = matches >= (question.minimumKeywordMatches || 1);
+      return {
+        isCorrect,
+        playerAnswer: text,
+        correctAnswer: question.explanation,
+        keywordMatches: matches
+      };
+    }
+
+    function applyResult(question, result) {
+      state.locked = true;
+      els.checkAnswer.disabled = true;
+      els.nextQuestion.disabled = false;
+
+      let earned = 0;
+      if (result.isCorrect) {
+        earned = question.reward || 0;
+        state.earnedData += earned;
+        window.RainforestGame.addData(earned);
+        window.RainforestGame.updateUI();
+        showFeedback(`Correct. ${question.explanation} You earned ${earned} Data.`, 'success');
+      } else {
+        showFeedback(`Not quite. ${question.explanation} No Data earned this round.`, 'error');
+      }
+
+      if (question.type === 'multiple-choice') {
+        [...els.choiceArea.children].forEach((child, index) => {
+          child.disabled = true;
+          if (index === question.correctIndex) child.classList.add('correct');
+          if (index === state.selectedChoice && index !== question.correctIndex) child.classList.add('wrong');
+        });
+      } else {
+        els.freeResponse.disabled = true;
+        els.submitTextAnswer.disabled = true;
+      }
+
+      state.answers.push({
+        id: question.id,
+        prompt: question.prompt,
+        isCorrect: result.isCorrect,
+        earned,
+        playerAnswer: result.playerAnswer,
+        correctAnswer: result.correctAnswer,
+        explanation: question.explanation
+      });
+    }
+
+    function showFeedback(message, type) {
+      els.feedbackBox.className = `feedback ${type}`;
+      els.feedbackBox.textContent = message;
+    }
+
+    function handleNextQuestion() {
+      if (state.currentIndex < state.pack.questions.length - 1) {
+        state.currentIndex += 1;
+        els.freeResponse.disabled = false;
+        els.submitTextAnswer.disabled = false;
+        renderQuestion();
+      } else {
+        renderResults();
+      }
+    }
+
+    function updateProgress() {
+      const completed = state.answers.length;
+      const total = state.pack.questions.length;
+      const percent = (completed / total) * 100;
+      els.progressBar.style.width = `${percent}%`;
+      els.progressLabel.textContent = `${completed} of ${total} questions completed.`;
+    }
+
+    function renderResults() {
+      const total = state.pack.questions.length;
+      const correct = state.answers.filter(answer => answer.isCorrect).length;
+      els.playView.classList.add('hidden');
+      els.resultsView.classList.remove('hidden');
+      els.correctTotal.textContent = correct;
+      els.questionTotal.textContent = total;
+      els.dataEarnedTotal.textContent = state.earnedData;
+      els.resultsSummary.textContent = `You answered ${correct} out of ${total} correctly and collected ${state.earnedData} Data for your research team.`;
+      els.reviewList.innerHTML = '';
+
+      state.answers.forEach(answer => {
+        const item = document.createElement('article');
+        item.className = `review-item ${answer.isCorrect ? 'correct' : 'wrong'}`;
+        item.innerHTML = `
+          <strong>${answer.isCorrect ? 'Correct' : 'Needs Review'}</strong>
+          <p><strong>Question:</strong> ${answer.prompt}</p>
+          <p><strong>Your answer:</strong> ${answer.playerAnswer}</p>
+          <p><strong>Why:</strong> ${answer.explanation}</p>
+          <p><strong>Reward:</strong> ${answer.earned} Data</p>
+        `;
+        els.reviewList.appendChild(item);
+      });
+
+      els.progressBar.style.width = '100%';
+      els.progressLabel.textContent = `${total} of ${total} questions completed.`;
+    }
+
+    function restartQuiz() {
+      state.currentIndex = 0;
+      state.selectedChoice = null;
+      state.answers = [];
+      state.earnedData = 0;
+      state.locked = false;
+      els.resultsView.classList.add('hidden');
+      els.playView.classList.remove('hidden');
+      els.freeResponse.disabled = false;
+      els.submitTextAnswer.disabled = false;
+      renderQuestion();
+    }
+
+    function loadQuizPack(packId) {
+      if (!quizPacks[packId]) return;
+      state.pack = quizPacks[packId];
+      els.quizPackReadout.textContent = `Quiz Pack: ${state.pack.title}`;
+      restartQuiz();
+    }
+
+    window.ConservationQuizGame = {
+      loadQuizPack,
+      quizPacks,
+      getCurrentPack: () => state.pack
+    };
+
+    initGame();
+  </script>
+</body>
+</html>
