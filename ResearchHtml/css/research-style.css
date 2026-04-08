@@ -1,0 +1,240 @@
+/* ============================================
+   KwF Research Hub – Shared Styles
+   Matches existing site conventions:
+   darkgreen accents, aliceblue cards, pill buttons,
+   background overlay pattern.
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+3:wght@300;400;600&display=swap');
+
+/* --- Reset & Base --- */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --green-dark: #1b5e20;
+  --green-mid: #2e7d32;
+  --green-light: #4caf50;
+  --green-pale: #e8f5e9;
+  --cream: #f0f7f0;
+  --card-bg: aliceblue;
+  --text-dark: #1a1a1a;
+  --text-muted: #4a5a4a;
+  --overlay: rgba(10, 30, 10, 0.55);
+  --radius: 12px;
+  --radius-pill: 40px;
+  --shadow-card: 0 8px 32px rgba(0,0,0,0.18);
+  --shadow-btn: 0 4px 14px rgba(27,94,32,0.35);
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Source Sans 3', 'Segoe UI', sans-serif;
+  --transition: 0.3s ease;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--text-dark);
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: #0a1e0a;
+}
+
+/* --- Background / Overlay Pattern --- */
+.page-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background: linear-gradient(145deg, #0a1e0a 0%, #12321a 50%, #0a1e0a 100%);
+}
+
+.page-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(46,125,50,0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(46,125,50,0.06) 0%, transparent 40%);
+}
+
+.page-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: var(--overlay);
+  pointer-events: none;
+}
+
+/* --- Typography --- */
+h1 {
+  font-family: var(--font-display);
+  color: white;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+h2 {
+  font-family: var(--font-display);
+  color: var(--green-dark);
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  font-weight: 700;
+}
+
+p {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--text-dark);
+}
+
+/* --- Card Container (matches existing .container pattern) --- */
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 2.5rem 2rem;
+  box-shadow: var(--shadow-card);
+  max-width: 640px;
+  width: 90%;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* --- Centered Page Layout --- */
+.page-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  text-align: center;
+}
+
+/* --- Pill Buttons (matches existing .button pattern) --- */
+.btn {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 14px 36px;
+  border-radius: var(--radius-pill);
+  border: none;
+  cursor: pointer;
+  transition: background var(--transition), transform 0.15s ease, box-shadow var(--transition);
+}
+
+.btn-primary {
+  background: var(--green-dark);
+  color: white;
+  box-shadow: var(--shadow-btn);
+}
+.btn-primary:hover {
+  background: var(--green-mid);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(27,94,32,0.45);
+}
+.btn-primary:active {
+  background: var(--green-dark);
+  transform: translateY(2px);
+  box-shadow: 0 2px 8px rgba(27,94,32,0.3);
+}
+
+.btn-secondary {
+  background: var(--card-bg);
+  color: var(--green-dark);
+  border: 2px solid var(--green-dark);
+}
+.btn-secondary:hover {
+  background: var(--green-pale);
+  transform: translateY(-2px);
+}
+.btn-secondary:active {
+  transform: translateY(2px);
+}
+
+/* --- Nav Row --- */
+.nav-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+/* --- Project Page Specific --- */
+.project-header {
+  margin-bottom: 1.5rem;
+}
+
+.project-header h1 {
+  color: var(--green-dark);
+  margin-bottom: 0.25rem;
+}
+
+.project-header .subtitle {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  font-weight: 300;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.project-img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 8px;
+  background: var(--green-pale);
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(27,94,32,0.12);
+}
+
+
+.project-body p {
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+/* --- Divider --- */
+.divider {
+  width: 60px;
+  height: 3px;
+  background: var(--green-mid);
+  border-radius: 2px;
+  margin: 1.5rem auto;
+}
+
+/* --- Fade-in Animation --- */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeUp 0.6s ease forwards;
+  opacity: 0;
+}
+
+.fade-in-delay-1 { animation-delay: 0.15s; }
+.fade-in-delay-2 { animation-delay: 0.3s; }
+.fade-in-delay-3 { animation-delay: 0.45s; }
+
+/* --- Responsive --- */
+@media (max-width: 600px) {
+  .card {
+    padding: 1.5rem 1.2rem;
+  }
+  .nav-row {
+    flex-direction: column;
+    align-items: center;
+  }
+}
