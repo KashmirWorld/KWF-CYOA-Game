@@ -399,8 +399,24 @@
         </div>
       </div>
 
+      <section class="result-card" id="intro-view">
+        <h2>Rainforest Basics Briefing</h2>
+        <p>
+          Before you begin, review the key ideas in this quiz. These questions focus only on rainforest basics:
+          how food webs stay balanced, why biodiversity matters, how habitat loss affects wildlife, and how animals
+          respond to changes in their environment.
+        </p>
+        <p>
+          As you answer correctly, you will earn Data for your expedition team. When you finish the quiz,
+          you will continue to the next story section.
+        </p>
+        <div class="answer-actions">
+          <button class="am-button am-button-primary" id="start-quiz-btn">Start Quiz</button>
+        </div>
+      </section>
+
       <div class="quiz-layout">
-        <section class="quiz-card" id="play-view" aria-live="polite">
+        <section class="quiz-card hidden" id="play-view" aria-live="polite">
           <div class="question-chip" id="question-type-chip">Multiple Choice</div>
           <h2 class="question-text" id="question-text"></h2>
           <p class="question-context" id="question-context"></p>
@@ -461,6 +477,7 @@
         </div>
         <div class="answer-actions">
           <button class="am-button am-button-primary" id="play-again">Play Again</button>
+          <button class="am-button" id="continue-story">Continue</button>
         </div>
         <div class="review-list" id="review-list"></div>
       </section>
@@ -596,7 +613,10 @@
       reviewList: document.getElementById('review-list'),
       playAgain: document.getElementById('play-again'),
       quizPackReadout: document.getElementById('quiz-pack-readout'),
-      submitTextAnswer: document.getElementById('submit-text-answer')
+      submitTextAnswer: document.getElementById('submit-text-answer'),
+      introView: document.getElementById('intro-view'),
+      startQuizBtn: document.getElementById('start-quiz-btn'),
+      continueStory: document.getElementById('continue-story')
     };
 
     function initGame() {
@@ -604,15 +624,29 @@
       window.RainforestGame.updateUI();
       els.quizPackReadout.textContent = `Quiz Pack: ${state.pack.title}`;
       bindEvents();
-      renderQuestion();
+      showIntro();
+    }
+    function showIntro() {
+      els.introView.classList.remove('hidden');
+      els.playView.classList.add('hidden');
+      els.resultsView.classList.add('hidden');
     }
 
+    function startQuiz() {
+      els.introView.classList.add('hidden');
+      els.playView.classList.remove('hidden');
+      renderQuestion();
+    }
     function bindEvents() {
       els.checkAnswer.addEventListener('click', handleCheckAnswer);
       els.nextQuestion.addEventListener('click', handleNextQuestion);
       els.restartQuiz.addEventListener('click', restartQuiz);
       els.playAgain.addEventListener('click', restartQuiz);
       els.submitTextAnswer.addEventListener('click', handleCheckAnswer);
+      els.startQuizBtn.addEventListener('click', startQuiz);
+      els.continueStory.addEventListener('click', () => {
+        window.location.href = 'scene2video.html';
+      });
     }
 
     function getCurrentQuestion() {
@@ -808,6 +842,7 @@
       state.earnedData = 0;
       state.locked = false;
       els.resultsView.classList.add('hidden');
+      els.introView.classList.add('hidden');
       els.playView.classList.remove('hidden');
       els.freeResponse.disabled = false;
       els.submitTextAnswer.disabled = false;

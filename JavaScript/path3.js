@@ -24,8 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Costs for this path (adjust as needed from your Ink logic)
   const COSTS = {
     'monitor-terrain-btn': { credits: 20, data: 8, href: 'video7.html' },
-    'create-map-btn': { credits: 15, data: 12, href: 'video3.html' },
-    'sentinel-species-btn': { credits: 25, data: 6, href: 'video5.html' }
+    'create-map-btn': { credits: 15, data: 12, href: 'video8.html' },
+    'sentinel-species-btn': { credits: 25, data: 6, href: 'video9.html' }
   };
 
   // Button handlers

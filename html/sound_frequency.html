@@ -196,244 +196,229 @@
         <div class="feedback" id="feedback"></div>
 
         <div class="controls">
-            <button class="btn" id="playSound">▶ Play Sound</button>
-            <button class="btn btn-primary" id="nextRound">Next Round</button>
-        </div>
-    </div>
+  <button class="btn" id="playSound">▶ Play Sound</button>
+  <button class="btn btn-primary" id="nextRound">Next Round</button>
+  <button id="finishBtn" class="btn btn-primary" style="display:none;">Finish & Continue</button>
+</div>
 
-    <script>
-        // Audio context for generating sounds
-        let audioCtx;
-        let currentOscillator = null;
-        let currentGainNode = null;
+<script src="../JavaScript/game-state.js"></script>
+<script>
+  let audioCtx;
+  let score = 0;
+  let currentRound = 0;
+  let correctSound = null;
+  let playedSound = false;
+  const TOTAL_ROUNDS = 5;
+  const SUCCESS_THRESHOLD = 3;
 
-        // Game state
-        let score = 0;
-        let currentRound = 0;
-        let correctSound = null;
-        let playedSound = false;
+  const sounds = [
+    { name: "Car Engine", freqs: [80, 120, 200, 350], type: "sawtooth", duration: 2.5 },
+    { name: "Glass Clink", freqs: [800, 1200, 2200], type: "sine", duration: 1.2 },
+    { name: "Bird Call", freqs: [600, 1400, 2800, 500], type: "sine", duration: 1.8 },
+    { name: "Chainsaw", freqs: [150, 250, 450, 750], type: "sawtooth", duration: 3.0 }
+  ];
 
-        // Sound definitions with frequency patterns
-        const sounds = [
-            {
-                name: "Car Engine",
-                freqs: [80, 120, 200, 350], // Low rumble frequencies
-                type: 'sawtooth',
-                duration: 2.5
-            },
-            {
-                name: "Glass Clink",
-                freqs: [800, 1200, 2200], // High clear tones
-                type: 'sine',
-                duration: 1.2
-            },
-            {
-                name: "Bird Call",
-                freqs: [600, 1400, 2800, 500], // Varied chirp
-                type: 'sine',
-                duration: 1.8
-            },
-            {
-                name: "Chainsaw",
-                freqs: [150, 250, 450, 750], // High energy buzz
-                type: 'sawtooth',
-                duration: 3.0
-            }
-        ];
+  let spectrumData = [];
 
-        // Frequency spectrum visualization data
-        let spectrumData = [];
+  function init() {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-        function init() {
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            setupEventListeners();
-            nextRound();
-        }
+    if (window.RainforestGame && typeof window.RainforestGame.initState === 'function') {
+      window.RainforestGame.initState(100, 0);
+      window.RainforestGame.updateUI();
+    }
 
-        function setupEventListeners() {
-            document.getElementById('playSound').addEventListener('click', playCurrentSound);
-            document.getElementById('nextRound').addEventListener('click', nextRound);
-        }
+    setupEventListeners();
+    nextRound();
+  }
 
-        function nextRound() {
-            currentRound++;
-            correctSound = sounds[Math.floor(Math.random() * sounds.length)];
-            
-            // Generate shuffled options
-            let options = [...sounds];
-            options.sort(() => Math.random() - 0.5);
-            options = options.slice(0, 4); // Ensure 4 options
-            
-            renderSoundCards(options);
-            resetSpectrum();
-            resetFeedback();
-            playedSound = false;
-            
-            document.getElementById('playSound').disabled = false;
-            document.getElementById('nextRound').disabled = true;
-        }
+  function setupEventListeners() {
+    document.getElementById('playSound').addEventListener('click', playCurrentSound);
+    document.getElementById('nextRound').addEventListener('click', nextRound);
+    document.getElementById('finishBtn').addEventListener('click', finishGame);
+  }
 
-        function renderSoundCards(options) {
-            const container = document.getElementById('soundCards');
-            container.innerHTML = options.map(sound => `
-                <div class="sound-card" data-sound="${sound.name}">
-                    <div class="sound-name">${sound.name}</div>
-                    <button class="play-btn">Preview</button>
-                </div>
-            `).join('');
+  function nextRound() {
+    if (currentRound >= TOTAL_ROUNDS) return;
 
-            // Add click listeners
-            container.querySelectorAll('.sound-card').forEach(card => {
-                card.addEventListener('click', () => selectSound(card));
-                card.querySelector('.play-btn').addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    previewSound(card.dataset.sound);
-                });
-            });
-        }
+    currentRound++;
+    correctSound = sounds[Math.floor(Math.random() * sounds.length)];
 
-        function playCurrentSound() {
-            if (!playedSound) {
-                generateSound(correctSound);
-                playedSound = true;
-            }
-        }
+    let options = [...sounds].sort(() => Math.random() - 0.5).slice(0, 4);
+    renderSoundCards(options);
+    resetSpectrum();
+    resetFeedback();
+    playedSound = false;
 
-        function previewSound(soundName) {
-            const sound = sounds.find(s => s.name === soundName);
-            if (sound) {
-                generateSound(sound);
-            }
-        }
+    document.getElementById('playSound').disabled = false;
+    document.getElementById('nextRound').disabled = true;
 
-        function generateSound(sound) {
-            stopCurrentSound();
-            
-            sound.freqs.forEach((freq, index) => {
-                setTimeout(() => {
-                    const osc = audioCtx.createOscillator();
-                    const gain = audioCtx.createGain();
-                    
-                    osc.type = sound.type;
-                    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-                    
-                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-                    
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-                    
-                    osc.start(audioCtx.currentTime);
-                    osc.stop(audioCtx.currentTime + 0.8);
-                }, index * 200);
-            });
-        }
+    updateScoreDisplay();
 
-        function selectSound(card) {
-            if (!playedSound) return;
-            
-            const selectedSound = sounds.find(s => s.name === card.dataset.sound);
-            const cards = document.querySelectorAll('.sound-card');
-            
-            cards.forEach(c => c.classList.remove('correct', 'wrong'));
-            
-            if (selectedSound.name === correctSound.name) {
-                card.classList.add('correct');
-                document.getElementById('feedback').textContent = '🎉 Correct! Great ear!';
-                document.getElementById('feedback').className = 'feedback correct';
-                score++;
-                updateScore();
-                document.getElementById('nextRound').disabled = false;
-                document.getElementById('playSound').disabled = true;
-            } else {
-                card.classList.add('wrong');
-                document.querySelector(`[data-sound="${correctSound.name}"]`).classList.add('correct');
-                document.getElementById('feedback').textContent = `❌ Nope! It was ${correctSound.name}`;
-                document.getElementById('feedback').className = 'feedback wrong';
-                document.getElementById('nextRound').disabled = false;
-                document.getElementById('playSound').disabled = true;
-            }
-        }
+    if (currentRound === TOTAL_ROUNDS) {
+      document.getElementById('nextRound').textContent = 'Finish This Round';
+    }
+  }
 
-        function updateSpectrum(frequencies) {
-            spectrumData = frequencies.map(f => ({
-                freq: f,
-                magnitude: Math.random() * 100 + 50 // Simulated visualization
-            }));
-            drawSpectrum();
-        }
+  function finishGame() {
+    if (currentRound < TOTAL_ROUNDS) {
+      document.getElementById('feedback').textContent = `Finish all ${TOTAL_ROUNDS} rounds first.`;
+      document.getElementById('feedback').className = 'feedback wrong';
+      return;
+    }
 
-        function drawSpectrum() {
-            const canvas = document.getElementById('spectrumCanvas');
-            const ctx = canvas.getContext('2d');
-            const rect = canvas.getBoundingClientRect();
-            canvas.width = rect.width * window.devicePixelRatio;
-            canvas.height = rect.height * window.devicePixelRatio;
-            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    if (score >= SUCCESS_THRESHOLD) {
+      if (window.RainforestGame && typeof window.RainforestGame.addData === 'function') {
+        window.RainforestGame.addData(2);
+        window.RainforestGame.updateUI();
+      }
+      window.location.href = 'path3.html';
+    } else {
+      document.getElementById('feedback').textContent = `You need at least ${SUCCESS_THRESHOLD} correct. You got ${score}.`;
+      document.getElementById('feedback').className = 'feedback wrong';
+    }
+  }
 
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
-            ctx.fillRect(0, 0, canvas.width / window.devicePixelRatio, canvas.height / window.devicePixelRatio);
+  function selectSound(card) {
+    if (!playedSound) return;
 
-            // Draw frequency bars
-            const barWidth = (rect.width / spectrumData.length) * 2;
-            spectrumData.forEach((data, i) => {
-                const barHeight = (data.magnitude / 100) * rect.height * 0.8;
-                const x = i * barWidth;
-                const y = rect.height - barHeight;
+    const selectedSound = sounds.find(s => s.name === card.dataset.sound);
+    const cards = document.querySelectorAll('.sound-card');
+    cards.forEach(c => c.classList.remove('correct', 'wrong'));
 
-                ctx.fillStyle = `hsl(${data.freq / 10}, 70%, 50%)`;
-                ctx.fillRect(x, y, barWidth * 0.7, barHeight);
-                
-                // Glow effect
-                ctx.shadowColor = `hsl(${data.freq / 10}, 70%, 50%)`;
-                ctx.shadowBlur = 10;
-                ctx.fillRect(x, y, barWidth * 0.7, barHeight);
-                ctx.shadowBlur = 0;
-            });
-        }
+    if (selectedSound.name === correctSound.name) {
+      card.classList.add('correct');
+      document.getElementById('feedback').textContent = '🎉 Correct! Great ear!';
+      document.getElementById('feedback').className = 'feedback correct';
+      score++;
+    } else {
+      card.classList.add('wrong');
+      const correctCard = document.querySelector(`[data-sound="${correctSound.name}"]`);
+      if (correctCard) correctCard.classList.add('correct');
+      document.getElementById('feedback').textContent = `❌ Nope! It was ${correctSound.name}`;
+      document.getElementById('feedback').className = 'feedback wrong';
+    }
 
-        function resetSpectrum() {
-            spectrumData = [];
-            const canvas = document.getElementById('spectrumCanvas');
-            const ctx = canvas.getContext('2d');
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-        }
+    updateScoreDisplay();
+    document.getElementById('playSound').disabled = true;
+    document.getElementById('nextRound').disabled = false;
 
-        function resetFeedback() {
-            document.getElementById('feedback').textContent = 'Play the sound, then pick the matching visualization!';
-            document.getElementById('feedback').className = 'feedback';
-        }
+    if (currentRound >= TOTAL_ROUNDS) {
+      document.getElementById('nextRound').style.display = 'none';
+      document.getElementById('finishBtn').style.display = 'inline-block';
+    }
+  }
 
-        function updateScore() {
-            document.getElementById('score').textContent = score;
-        }
+  function updateScoreDisplay() {
+    document.getElementById('score').textContent = `${score}/${currentRound}`;
+  }
 
-        function stopCurrentSound() {
-            if (currentOscillator) {
-                currentOscillator.stop();
-                currentOscillator.disconnect();
-            }
-        }
+  function resetFeedback() {
+    document.getElementById('feedback').textContent = 'Play the sound, then choose the correct match.';
+    document.getElementById('feedback').className = 'feedback';
+  }
 
-        // Animate idle spectrum
-        setInterval(() => {
-            if (spectrumData.length === 0) {
-                const idleData = Array.from({length: 60}, () => ({
-                    freq: Math.random() * 2000 + 20,
-                    magnitude: Math.random() * 30 + 10
-                }));
-                updateSpectrum(idleData.map(d => d.freq));
-            }
-        }, 200);
+  function renderSoundCards(options) {
+    const container = document.getElementById('soundCards');
+    container.innerHTML = options.map(sound => `
+      <div class="sound-card" data-sound="${sound.name}">
+        <div class="sound-name">${sound.name}</div>
+        <button class="play-btn">Preview</button>
+      </div>
+    `).join('');
 
-        // Resume audio context on user interaction
-        document.addEventListener('click', () => {
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-        }, { once: true });
+    container.querySelectorAll('.sound-card').forEach(card => {
+      card.addEventListener('click', () => selectSound(card));
+      card.querySelector('.play-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        previewSound(card.dataset.sound);
+      });
+    });
+  }
 
-        init();
-    </script>
+  function playCurrentSound() {
+    if (!playedSound) {
+      generateSound(correctSound);
+      playedSound = true;
+    }
+  }
+
+  function previewSound(soundName) {
+    const sound = sounds.find(s => s.name === soundName);
+    if (sound) generateSound(sound);
+  }
+
+  function generateSound(sound) {
+    updateSpectrum(sound.freqs);
+
+    sound.freqs.forEach((freq, index) => {
+      setTimeout(() => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = sound.type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.8);
+      }, index * 200);
+    });
+  }
+
+  function updateSpectrum(frequencies) {
+    spectrumData = frequencies.map(f => ({
+      freq: f,
+      magnitude: Math.random() * 100 + 50
+    }));
+    drawSpectrum();
+  }
+
+  function drawSpectrum() {
+    const canvas = document.getElementById('spectrumCanvas');
+    const ctx = canvas.getContext('2d');
+    const rect = canvas.getBoundingClientRect();
+
+    canvas.width = rect.width * window.devicePixelRatio;
+    canvas.height = rect.height * window.devicePixelRatio;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+    ctx.clearRect(0, 0, rect.width, rect.height);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+    ctx.fillRect(0, 0, rect.width, rect.height);
+
+    if (!spectrumData.length) return;
+
+    const barWidth = rect.width / spectrumData.length;
+    spectrumData.forEach((data, i) => {
+      const barHeight = (data.magnitude / 150) * rect.height * 0.8;
+      const x = i * barWidth;
+      const y = rect.height - barHeight;
+
+      ctx.fillStyle = `hsl(${data.freq / 10}, 70%, 50%)`;
+      ctx.fillRect(x, y, barWidth * 0.7, barHeight);
+    });
+  }
+
+  function resetSpectrum() {
+    spectrumData = [];
+    const canvas = document.getElementById('spectrumCanvas');
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  document.addEventListener('click', () => {
+    if (audioCtx && audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+  }, { once: true });
+
+  init();
+</script>
 </body>
 </html>

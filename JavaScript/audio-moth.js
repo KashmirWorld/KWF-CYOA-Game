@@ -186,24 +186,42 @@
   }
 
   function finishGame() {
-    const optimalPlaced = optimalZones.filter(z => placements.has(z.dataset.zoneId));
-    const totalOptimal = optimalZones.length;
-    const message =
-      "You placed recorders on " +
-      optimalPlaced.length +
-      " out of " +
-      totalOptimal +
-      " high-quality locations.\n\n" +
-      "Remember: ideal placements follow wildlife corridors, avoid human and poacher routes, stay off the ground, are protected from rain, and remain accessible for maintenance.";
-    showPopup("Minigame complete", message);
+  const optimalPlaced = optimalZones.filter(z => placements.has(z.dataset.zoneId));
+  const correctCount = optimalPlaced.length;
+  const totalOptimal = optimalZones.length;
+  const passed = correctCount >= 2;
 
-    if (optimalPlaced.length > 0) {
-      syncGlobalData(1); // small completion bonus
-    }
+  clearInterval(timerInterval);
 
-    // Optionally: call out to a scene manager or simply hide this minigame
-    // after the player closes the popup. You can adjust this as needed.
+  if (passed) {
+    syncGlobalData(1); // optional completion bonus
+
+    showPopup(
+      "Minigame complete!",
+      `Great work! You correctly placed ${correctCount} out of ${totalOptimal} Audio Moths in strong monitoring locations. You can now continue to the next scene.`
+    );
+
+    feedbackEl.textContent =
+      `Success! You placed ${correctCount} of ${totalOptimal} recorders correctly.`;
+
+    popupClose.onclick = () => {
+      popup.classList.add("hidden");
+      window.location.href = "Scene3.html";
+    };
+  } else {
+    showPopup(
+      "Try again",
+      `You correctly placed ${correctCount} out of ${totalOptimal} Audio Moths. You need at least 2 correct placements to move on.`
+    );
+
+    feedbackEl.textContent =
+      `You need at least 2 correct placements to continue. Right now you have ${correctCount}.`;
+
+    popupClose.onclick = () => {
+      popup.classList.add("hidden");
+    };
   }
+}
   function startTimer() {
   updateTimerDisplay();
   timerInterval = setInterval(() => {

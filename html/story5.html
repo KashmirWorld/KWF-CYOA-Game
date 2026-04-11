@@ -13,10 +13,34 @@
         Despite the crash, the partial scan gives you valuable insight. With the data you've recovered, you can still push your mission forward from here.
     </p>
     <div class="button-container">
-    <button onclick="window.location.href='../html/path4.html'">Next</button>
+    <button id="next-btn" class="button">Next</button>
     </div>
 </head>
 <body>
     
 </body>
+<script src="../JavaScript/game-state.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+  // Apply data collection effect: -5 credits, +1 data (exactly your Ink logic)
+  if (RainforestGame.canAfford(5)) {
+    RainforestGame.spendCredits(5);
+    RainforestGame.addData(1);
+  }
+
+  // Update live stats display
+  RainforestGame.updateUI();
+
+  // Next button → video1.html
+  const nextBtn = document.getElementById('next-btn');
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+  RainforestGame.updateUI();
+  window.location.href = 'sound_frequency.html';  // Path1 → first minigame
+});
+  } else {
+    console.warn('Next button (#next-btn) not found');
+  }
+});
+</script>
 </html>
