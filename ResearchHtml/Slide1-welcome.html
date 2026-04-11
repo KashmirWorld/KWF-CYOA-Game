@@ -1,24 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KWF Research Hub - Welcome</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KwF Research Hub – Welcome</title>
+  <link rel="stylesheet" href="css/research-style.css">
+  <style>
+    .welcome-title {
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      margin-bottom: 0.3rem;
+    }
+    .welcome-tagline {
+      color: rgba(255,255,255,0.7);
+      font-family: var(--font-body);
+      font-weight: 300;
+      font-size: 1.1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+    .welcome-desc {
+      color: rgba(255,255,255,0.85);
+      font-size: 1.1rem;
+      max-width: 520px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.8;
+    }
+    /* Decorative floating particles */
+    .particle {
+      position: fixed;
+      width: 4px;
+      height: 4px;
+      background: rgba(76,175,80,0.25);
+      border-radius: 50%;
+      animation: drift 8s ease-in-out infinite;
+    }
+    .particle:nth-child(1) { top: 15%; left: 10%; animation-delay: 0s; }
+    .particle:nth-child(2) { top: 70%; left: 85%; animation-delay: 2s; animation-duration: 10s; }
+    .particle:nth-child(3) { top: 40%; left: 75%; animation-delay: 4s; width: 3px; height: 3px; }
+    .particle:nth-child(4) { top: 80%; left: 20%; animation-delay: 1s; animation-duration: 12s; }
+    .particle:nth-child(5) { top: 25%; left: 55%; animation-delay: 3s; width: 5px; height: 5px; }
+    @keyframes drift {
+      0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+      50% { transform: translateY(-20px) translateX(10px); opacity: 0.7; }
+    }
+  </style>
 </head>
 <body>
+  <div class="page-bg"></div>
 
-    <h1>Welcome to the Research Hub</h1>
-    <p>
-        Welcome to our Research Hub! This is where technology and conservation
-        unite through the use of drones, AI, and research to protect endangered
-        species and their ecosystem.
+  <!-- Subtle particles -->
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+
+  <main class="page-center">
+    <h1 class="welcome-title fade-in">Welcome to the Research Hub</h1>
+    <p class="welcome-tagline fade-in fade-in-delay-1">Technology · Conservation · Discovery</p>
+
+    <div class="divider fade-in fade-in-delay-2"></div>
+
+    <p class="welcome-desc fade-in fade-in-delay-2">
+      Where drones, AI, and field research unite to protect endangered species
+      and their ecosystems. Explore our projects around the globe.
     </p>
 
-    <!--World map animation show locations of current and past projects
-    maybe with interactive labels/buttons leading to project pages. -->
-
-    <nav>
-        <a href="Slide2-gallery.html">Look at some of our projects</a>
-    </nav>
+    <a href="research-map.html" class="btn btn-primary fade-in fade-in-delay-3">
+      Explore the Map &rarr;
+    </a>
+  </main>
 </body>
 </html>
