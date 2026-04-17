@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KwF Research Hub – Project Map</title>
+  <link rel="stylesheet" href="css/research-style.css">
+  <link rel="stylesheet" href="css/map-style.css">
+</head>
+<body>
+  <div class="page-bg"></div>
+
+  <header class="map-header fade-in">
+    <a href="Slide1-welcome.html" class="back-link">&larr; Back</a>
+    <h1>Our Global Projects</h1>
+    <p class="map-subtitle">Click a location to explore a project</p>
+  </header>
+
+  <main class="map-wrapper fade-in fade-in-delay-1">
+    <div class="map-container" id="mapContainer">
+
+      <img src="Photos/noun-world-map-3090683.svg" alt="" id="worldMap" />
+
+      <!-- Clickable Markers (positioned over the SVG via %) -->
+      <a href="Slide3-uav.html" class="map-marker" style="left: 50.5%; top: 44%;" data-project="uav">
+        <span class="marker-pulse"></span>
+        <span class="marker-dot"></span>
+        <span class="marker-label">UAV in Africa</span>
+      </a>
+
+      <a href="Slide4-mishell.html" class="map-marker" style="left: 16.5%; top: 50%;" data-project="mishell">
+        <span class="marker-pulse"></span>
+        <span class="marker-dot"></span>
+        <span class="marker-label">MiSHELL</span>
+      </a>
+
+      <a href="Slide5-trinity.html" class="map-marker" style="left: 66%; top: 35%;" data-project="trinity">
+        <span class="marker-pulse"></span>
+        <span class="marker-dot"></span>
+        <span class="marker-label">Project Trinity</span>
+      </a>
+
+      <a href="Slide6-bioacoustics.html" class="map-marker" style="left: 22%; top: 57%;" data-project="bioacoustics">
+        <span class="marker-pulse"></span>
+        <span class="marker-dot"></span>
+        <span class="marker-label">BioAcoustics</span>
+      </a>
+
+    </div>
+  </main>
+
+  <!-- Info panel that appears on hover -->
+  <div class="info-panel" id="infoPanel">
+    <h3 id="infoPanelTitle"></h3>
+    <p id="infoPanelDesc"></p>
+    <span class="info-hint">Click to explore &rarr;</span>
+  </div>
+
+  <script src="js/map.js"></script>
+</body>
+</html>

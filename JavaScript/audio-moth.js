@@ -186,41 +186,47 @@
   }
 
   function finishGame() {
-  const optimalPlaced = optimalZones.filter(z => placements.has(z.dataset.zoneId));
-  const correctCount = optimalPlaced.length;
-  const totalOptimal = optimalZones.length;
-  const passed = correctCount >= 2;
-
   clearInterval(timerInterval);
+
+  const optimalPlaced = optimalZones.filter(z => placements.has(z.dataset.zoneId));
+  const totalOptimal = optimalZones.length;
+  const correctCount = optimalPlaced.length;
+
+  // Get total Data from game state
+  const totalData = (typeof game.getData === 'function') ? game.getData() : 0;
+
+  let passed = false;
+  let endUrl = null;
+  let message = '';
+
+  if (totalData < 20) {
+    passed = false;
+    endUrl = 'failure.html';
+    message = `Minigame complete. You placed ${correctCount}/${totalOptimal} recorders correctly.\n\nYour total Data is ${totalData} — expedition under-resourced. Check failure.html for next steps.`;
+  } else if (totalData >= 20 && totalData <= 30) {
+    passed = true;
+    endUrl = 'partial_success.html';
+    message = `Minigame complete. You placed ${correctCount}/${totalOptimal} recorders correctly.\n\nYour total Data is ${totalData} — partial success achieved. Continue to partial_success.html.`;
+  } else if (totalData > 30) {
+    passed = true;
+    endUrl = 'success.html';
+    message = `Minigame complete. You placed ${correctCount}/${totalOptimal} recorders correctly.\n\nYour total Data is ${totalData} — excellent results! Continue to success.html.`;
+  }
+
+  showPopup("Expedition Status", message);
 
   if (passed) {
     syncGlobalData(1); // optional completion bonus
-
-    showPopup(
-      "Minigame complete!",
-      `Great work! You correctly placed ${correctCount} out of ${totalOptimal} Audio Moths in strong monitoring locations. You can now continue to the next scene.`
-    );
-
-    feedbackEl.textContent =
-      `Success! You placed ${correctCount} of ${totalOptimal} recorders correctly.`;
-
-    popupClose.onclick = () => {
-      popup.classList.add("hidden");
-      window.location.href = "Scene3.html";
-    };
+    feedbackEl.textContent = `Success! Total Data: ${totalData}. Moving to ${endUrl}.`;
   } else {
-    showPopup(
-      "Try again",
-      `You correctly placed ${correctCount} out of ${totalOptimal} Audio Moths. You need at least 2 correct placements to move on.`
-    );
-
-    feedbackEl.textContent =
-      `You need at least 2 correct placements to continue. Right now you have ${correctCount}.`;
-
-    popupClose.onclick = () => {
-      popup.classList.add("hidden");
-    };
+    feedbackEl.textContent = `Expedition status: ${totalData} Data. Check ending for next steps.`;
   }
+
+  // Override popup close to redirect
+  popupClose.onclick = () => {
+    popup.classList.add("hidden");
+    window.location.href = endUrl;
+  };
 }
   function startTimer() {
   updateTimerDisplay();
