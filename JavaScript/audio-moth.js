@@ -186,24 +186,48 @@
   }
 
   function finishGame() {
-    const optimalPlaced = optimalZones.filter(z => placements.has(z.dataset.zoneId));
-    const totalOptimal = optimalZones.length;
-    const message =
-      "You placed recorders on " +
-      optimalPlaced.length +
-      " out of " +
-      totalOptimal +
-      " high-quality locations.\n\n" +
-      "Remember: ideal placements follow wildlife corridors, avoid human and poacher routes, stay off the ground, are protected from rain, and remain accessible for maintenance.";
-    showPopup("Minigame complete", message);
+  clearInterval(timerInterval);
 
-    if (optimalPlaced.length > 0) {
-      syncGlobalData(1); // small completion bonus
-    }
+  const optimalPlaced = optimalZones.filter(z => placements.has(z.dataset.zoneId));
+  const totalOptimal = optimalZones.length;
+  const correctCount = optimalPlaced.length;
 
-    // Optionally: call out to a scene manager or simply hide this minigame
-    // after the player closes the popup. You can adjust this as needed.
+  // Get total Data from game state
+  const totalData = (typeof game.getData === 'function') ? game.getData() : 0;
+
+  let passed = false;
+  let endUrl = null;
+  let message = '';
+
+  if (totalData < 20) {
+    passed = false;
+    endUrl = 'failure.html';
+    message = `Minigame complete. You placed ${correctCount}/${totalOptimal} recorders correctly.\n\nYour total Data is ${totalData} — expedition under-resourced. Check failure.html for next steps.`;
+  } else if (totalData >= 20 && totalData <= 30) {
+    passed = true;
+    endUrl = 'partial_success.html';
+    message = `Minigame complete. You placed ${correctCount}/${totalOptimal} recorders correctly.\n\nYour total Data is ${totalData} — partial success achieved. Continue to partial_success.html.`;
+  } else if (totalData > 30) {
+    passed = true;
+    endUrl = 'success.html';
+    message = `Minigame complete. You placed ${correctCount}/${totalOptimal} recorders correctly.\n\nYour total Data is ${totalData} — excellent results! Continue to success.html.`;
   }
+
+  showPopup("Expedition Status", message);
+
+  if (passed) {
+    syncGlobalData(1); // optional completion bonus
+    feedbackEl.textContent = `Success! Total Data: ${totalData}. Moving to ${endUrl}.`;
+  } else {
+    feedbackEl.textContent = `Expedition status: ${totalData} Data. Check ending for next steps.`;
+  }
+
+  // Override popup close to redirect
+  popupClose.onclick = () => {
+    popup.classList.add("hidden");
+    window.location.href = endUrl;
+  };
+}
   function startTimer() {
   updateTimerDisplay();
   timerInterval = setInterval(() => {
