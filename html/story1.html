@@ -5,40 +5,60 @@
   <link rel="stylesheet" href="C:\Users\laure\Dropbox\KashmirProject\KWF-CYOA-Game\css\story-style.css">
   <style>
     #splash {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: black url('../Videos/Plug in animation 2_1.gif') no-repeat center center;
-  background-size: contain;
-  z-index: 9999;
-  opacity: 1;
-  transition: opacity 0.5s ease;
-}
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: black url('../Videos/Plug in animation 2_1.gif') no-repeat center center;
+      background-size: contain;
+      z-index: 9999;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
 
+    .stats-row {
+      display: flex;
+      gap: 40px;
+      justify-content: center;
+      margin: 30px 0;
+      flex-wrap: wrap;
+    }
+
+    .stats-card {
+      text-align: center;
+      width: 220px;
+    }
+
+    .stats-card img {
+      max-width: 100%;
+      height: auto;
+      max-height: 50px;
+      display: block;
+      margin: 0 auto 12px;
+      object-fit: contain;
+    }
   </style>
   <title>KWF Rainforest Expedition</title>
 </head>
 <body>
-  <!-- Splash screen -->
   <div id="splash"></div>
 
   <div class="container">
     <h1>Debrief</h1>
     <p>
-      You are a KWF researcher on a mission in the Osa Peninsula, Costa Rica. 
-      Your goal: gather enough data to develop AI-driven conservation tools to protect 
+      You are a KWF researcher on a mission in the Osa Peninsula, Costa Rica.
+      Your goal: gather enough data to develop AI-driven conservation tools to protect
       endangered wildlife.
     </p>
     <p>With <strong>80 Credits</strong>, you must spend wisely and make strategic choices to complete your research.</p>
 
-    <!-- Live stats with images -->
-    <div style="display: flex; gap: 40px; justify-content: center; margin: 30px 0;">
-      <div class="left-credits-image" style="text-align: center;">
-        <img src="../images/credits.png" alt="Credits" height="350">
+    <div class="stats-row">
+      <div class="stats-card">
+        <img src="../Photos/IMG_9912.png" alt="Credits">
         <h2 id="credits-readout">Credits: 80</h2>
       </div>
-      <div class="right-data-image" style="text-align: center;">
-        <img src="../images/mission.png" alt="Data" height="350">
+
+      <div class="stats-card">
+        <img src="../Photos/IMG_9974.png" alt="Data">
         <h2 id="data-readout">Data: 0</h2>
       </div>
     </div>
@@ -48,7 +68,6 @@
     </div>
   </div>
 
-  <!-- Scripts -->
   <script src="../JavaScript/game-state.js"></script>
   <script src="../JavaScript/start.js"></script>
 </body>

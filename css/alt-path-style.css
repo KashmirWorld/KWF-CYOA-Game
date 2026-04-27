@@ -83,6 +83,13 @@ h1{
     border-radius: 10px;
 }
 
+#move-on-btn {
+  padding: 12px 24px;
+  font-size: 18px;
+  min-width: 160px;
+  min-height: 50px;
+}
+
 /* Top-left credits/data cluster */
 .top-left-image-container {
     position: absolute;

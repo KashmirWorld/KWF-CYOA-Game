@@ -10,7 +10,7 @@
   <img src="../Photos/IMG_9912.png" alt="Credits" width="40" height="40">
   <span id="credits-readout">Credits: 0</span>
   <span id="data-readout">Data: 0</span>
-  <img src="../Photos/data-icon.png" alt="Data" width="40" height="40">
+  <img src="../Photos/IMG_9974.png" alt="Data" width="40" height="40">
 </div>
 
 
@@ -38,12 +38,9 @@
     </div>
 
     <!-- Always available: Move On (free, bottom option) -->
-    <div class="bottom-button-container" style="position: absolute; bottom: -100px; left: 50%; transform: translateX(-50%);">
-      <button class="button" id="move-on-btn">
-        <img src="../Photos/Move_On.gif" height="200" alt="Move On">
-      </button>
-      <p>Move On</p>
-    </div>
+    <div class="move-on-btn" style="position: absolute; bottom: -100px; left: 50%; transform: translateX(-50%);">
+  <button class="button" id="move-on-btn">Move On</button>
+</div>
   </div>
 
   <!-- Audio elements -->
@@ -67,9 +64,9 @@
       timeLeft--;
       timerEl.textContent = `${timeLeft.toString().padStart(2, '0')}:00`;
       if (timeLeft <= 0) {
-        clearInterval(timer);
-        document.getElementById('ignore-btn')?.click(); // or your default
-      }
+  clearInterval(timer);
+  document.getElementById('move-on-btn')?.click();
+}
     }, 1000);
   
   // Exact Ink cost checks
