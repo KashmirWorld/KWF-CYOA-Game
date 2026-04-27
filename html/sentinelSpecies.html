@@ -43,6 +43,9 @@
       padding: 10px 14px;
       border-radius: 999px;
       font-weight: 600;
+      display: flex;        /* Enables Flexbox */
+      align-items: center;  /* Centers vertically */
+      justify-content: center; /* Centers horizontally */
     }
 
     .panel {
@@ -160,6 +163,10 @@
       padding: 20px;
     }
 
+    #score {
+    color: white !important;
+    }
+
     .modal-content {
       width: min(520px, 100%);
       background: white;
@@ -204,21 +211,18 @@
         <div class="species" data-id="howler-monkey">
           <img src="../Photos/howler_monkey.jpg" alt="Howler Monkey" />
           <h3>Howler Monkey</h3>
-          <p>Booming canopy calls, often used as a warning signal and indicator of forest disturbance.</p>
           <button class="learn-btn" data-audio="../Audio/howler_monkey.mp3">Play Call</button>
         </div>
 
         <div class="species" data-id="great-tinamou">
           <img src="../Photos/great_tinamou.jpg" alt="Great Tinamou" />
           <h3>Great Tinamou</h3>
-          <p>Ground-based repetitive calls that can reveal shifts in understory habitat conditions.</p>
           <button class="learn-btn" data-audio="../Audio/great_tinamou.mp3">Play Call</button>
         </div>
 
         <div class="species" data-id="scarlet-macaw">
           <img src="../Photos/scarlet_macaw.jpg" alt="Scarlet Macaw" />
           <h3>Scarlet Macaw</h3>
-          <p>Loud canopy calls that help indicate forest health and nesting activity.</p>
           <button class="learn-btn" data-audio="../Audio/scarlet_macaw.mp3">Play Call</button>
         </div>
       </div>
@@ -233,7 +237,7 @@
 
       <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:14px;">
         <button class="action-btn" id="play-mystery-btn">Play Mystery Sound</button>
-        <button class="action-btn hidden" id="continue-btn">Continue to path4</button>
+        <button class="action-btn hidden" id="continue-btn">Continue to next path!</button>
       </div>
 
       <div class="audio-area" id="audio-draggables"></div>
@@ -256,14 +260,7 @@
     </section>
   </div>
 
-  <div id="interrupt-modal">
-    <div class="modal-content">
-      <p id="interrupt-text"></p>
-      <div class="interrupt-options">
-        <button class="interrupt-btn" data-id="howler-monkey">Howler Monkey</button>
-        <button class="interrupt-btn" data-id="great-tinamou">Great Tinamou</button>
-        <button class="interrupt-btn" data-id="scarlet-macaw">Scarlet Macaw</button>
-      </div>
+  
       <p id="interrupt-feedback" style="margin-top:12px; font-weight:bold;"></p>
     </div>
   </div>
@@ -335,7 +332,7 @@
       document.getElementById('learn-panel').classList.add('hidden');
       document.getElementById('challenge-panel').classList.remove('hidden');
       startNextChallengeRound();
-      scheduleInterrupt();
+      
     }
 
     function startNextChallengeRound() {
@@ -360,7 +357,7 @@
       chip.draggable = true;
       chip.id = 'mystery-audio-chip';
       chip.dataset.id = currentChallengeSpecies.id;
-      chip.textContent = '🔊 Drag this mystery call';
+      chip.textContent = '🔊 Mystery Call';
 
       chip.addEventListener('dragstart', (e) => {
         challengeTokenUsed = true;
@@ -493,7 +490,7 @@
           setTimeout(() => {
             modal.style.display = 'none';
             feedback.textContent = '';
-            scheduleInterrupt();
+            
           }, 1800);
         };
       });

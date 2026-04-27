@@ -36,12 +36,13 @@
         .header h1 {
             margin: 0;
             font-size: 1.8rem;
-            color: #145c4b;
+            color: #ffffff;
         }
 
         .score {
             font-size: 1.1rem;
             font-weight: 600;
+            color:#ffffff;
         }
 
         .spectrum-container {
@@ -122,6 +123,7 @@
             grid-column: 1 / -1;
             text-align: center;
             font-size: 1.2rem;
+            color:#ffffff;
             margin: 20px 0;
             min-height: 50px;
             display: flex;
@@ -419,6 +421,39 @@
   }, { once: true });
 
   init();
+</script>
+
+<div id="tutorial-modal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; display: flex; justify-content: center; align-items: center; color: white;">
+    <div style="background: #145c4b; padding: 30px; border-radius: 12px; max-width: 500px; text-align: center;">
+        <h2 id="tutorial-title">Welcome!</h2>
+        <p id="tutorial-text">Learn about sound waves!</p>
+        <button id="next-tut-btn" class="btn btn-primary" style="margin-top: 20px;">Next</button>
+    </div>
+</div>
+<script>
+    const tutorialSteps = [
+            {title: "Introduction", text: "We listen to and track animal calls in Tamandua to help track populations in the area. But to track animal calls, we first have to ask, what is sound?"},
+            {title: "What are Sound Waves?", text: "Sound travels as a wave of vibrating air molecules. Sound waves are defined by their frequency, which is the number of vibrations per second."},
+            {title: "Understanding Frequency", text: "Frequency is measured in Hertz (Hz). Higher frequency waves vibrate faster and sound higher in pitch, while lower frequency waves vibrate slower and sound lower."},
+            {title: "How to Play", text: "In this game, you will listen to a specific sound frequency. Observe the visual wave spectrum and pick the card that matches what you hear. Remember, lower sound have lower bars and higher sounds have higher bars!"},
+            {title: "Ready?", text: "You need to get at least 3 correct out of 5 rounds to win. Good luck!"}
+        ];
+    let step = 0;
+    const modal = document.getElementById('tutorial-modal');
+    const btn = document.getElementById('next-tut-btn');
+    const title = document.getElementById('tutorial-title');
+    const text = document.getElementById('tutorial-text');
+
+    btn.addEventListener('click', () => {
+        step++;
+        if (step < tutorialSteps.length) {
+            title.textContent = tutorialSteps[step].title;
+            text.textContent = tutorialSteps[step].text;
+            if (step === tutorialSteps.length - 1) btn.textContent = "Start Game";
+        } else {
+            modal.style.display = 'none';
+        }
+    });
 </script>
 </body>
 </html>

@@ -68,7 +68,7 @@
       align-items: center;
       gap: 6px;
       font-size: 0.95rem;
-      color: #ffffff;
+      color: #000000;
       background: rgba(255,255,255,0.14);
       border: 1px solid rgba(255,255,255,0.2);
       padding: 8px 12px;
@@ -446,24 +446,6 @@
             </div>
             <p id="progress-label">0 of 4 questions completed.</p>
           </section>
-
-          <section class="sidebar-card">
-            <h3>How rewards work</h3>
-            <ul class="legend-list">
-              <li>Correct answers add Data points.</li>
-              <li>Incorrect answers add nothing.</li>
-              <li>Each quiz pack can have its own reward values.</li>
-            </ul>
-          </section>
-
-          <section class="sidebar-card">
-            <h3>Why this is easy to expand</h3>
-            <ul class="fact-list">
-              <li>Questions live in one data array.</li>
-              <li>Supports both multiple choice and short response.</li>
-              <li>Swap the quiz pack object to create the next three quizzes.</li>
-            </ul>
-          </section>
         </aside>
       </div>
 
@@ -557,8 +539,8 @@
             prompt: 'A monkey species suddenly avoids a noisy logging area. What behavior change is it showing, and why might that matter for conservation?',
             context: 'Mention both the behavior and one conservation impact in your answer.',
             reward: 4,
-            acceptableKeywords: ['avoid', 'move', 'leave', 'disturb', 'noise', 'habitat', 'stress', 'feeding', 'nesting'],
-            minimumKeywordMatches: 2,
+            acceptableKeywords: ['avoid', 'move', 'leave', 'disturb', 'noise', 'habitat', 'stress', 'feeding', 'nesting', 'pollution', 'population', 'level'],
+            minimumKeywordMatches: 1,
             explanation: 'This is disturbance-driven behavior change. When animals avoid noisy areas, they may lose feeding, nesting, or breeding space.'
           },
           {
@@ -645,7 +627,7 @@
       els.submitTextAnswer.addEventListener('click', handleCheckAnswer);
       els.startQuizBtn.addEventListener('click', startQuiz);
       els.continueStory.addEventListener('click', () => {
-        window.location.href = 'scene2video.html';
+        window.location.href = 'index.html';
       });
     }
 
