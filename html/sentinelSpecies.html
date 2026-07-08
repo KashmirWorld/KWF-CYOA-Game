@@ -299,6 +299,13 @@
     let interruptsTriggered = 0;
     const MAX_INTERRUPTS = 2;
 
+    // learningAudio object for playing each animal's calls, set to null
+      let learningAudio = null;
+
+    // mysteryAudio object for playing the mystery audio button, set to null
+    let mysteryAudio = null;
+
+
     function initGame() {
       if (window.RainforestGame && typeof window.RainforestGame.initState === 'function') {
         window.RainforestGame.initState(100, 0);
@@ -313,9 +320,20 @@
 
     function bindLearningButtons() {
       document.querySelectorAll('.learn-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const audio = new Audio(btn.dataset.audio);
-          audio.play();
+          btn.addEventListener('click', () => {
+
+            // if it's null, initialize it to a new Audio
+            if (!learningAudio) {
+                learningAudio = new Audio(btn.dataset.audio);
+            }
+            else
+            {
+                // otherwise, just set it to the current audio to be played
+                learningAudio.src = btn.dataset.audio;
+            }
+
+            learningAudio.currentTime = 0;
+            learningAudio.play();
         });
       });
     }
@@ -373,9 +391,20 @@
     }
 
     function playMysterySound() {
-      if (!currentChallengeSpecies) return;
-      const audio = new Audio(currentChallengeSpecies.audio);
-      audio.play();
+        if (!currentChallengeSpecies) return;
+
+        // if it's null, initialize it to a new Audio
+        if (!mysteryAudio) {
+            mysteryAudio = new Audio(currentChallengeSpecies.audio);
+        }
+        else {
+            // otherwise, just set it to the current audio to be played
+            mysteryAudio.src = currentChallengeSpecies.audio;
+        }
+
+        // sets the current time of the audio to the start and plays it
+        mysteryAudio.currentTime = 0;
+        mysteryAudio.play();
     }
 
     function bindChallengeDropzones() {
