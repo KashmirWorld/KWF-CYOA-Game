@@ -293,7 +293,8 @@
 
     let score = 0;
     let challengeRound = 0;
-    const TOTAL_CHALLENGE_ROUNDS = 3;
+    const TOTAL_CHALLENGE_ROUNDS = 5;
+    const REQUIRED_CHALLENGE_ROUNDS = 3;
     let currentChallengeSpecies = null;
     let challengeTokenUsed = false;
     let interruptsTriggered = 0;
@@ -465,14 +466,14 @@
     }
 
     function finishChallenge() {
-      if (score >= TOTAL_CHALLENGE_ROUNDS) {
-        document.getElementById('feedback').textContent = 'Excellent work. You identified all sentinel species correctly. You may continue to the next path.';
-        document.getElementById('continue-btn').classList.remove('hidden');
-        document.getElementById('play-mystery-btn').disabled = true;
-      } else {
-        document.getElementById('feedback').textContent = `You finished with ${score}/${TOTAL_CHALLENGE_ROUNDS}. To move on, you need all 3 correct. Refresh to try again or add a retry button.`;
-        document.getElementById('play-mystery-btn').disabled = true;
-      }
+        if (score >= REQUIRED_CHALLENGE_ROUNDS) {
+            document.getElementById('feedback').textContent = 'Excellent work. You identified the majority of sentinel species correctly. You may continue to the next path.';
+            document.getElementById('continue-btn').classList.remove('hidden');
+            document.getElementById('play-mystery-btn').disabled = true;
+        } else {
+            document.getElementById('feedback').textContent = `You finished with ${score}/${TOTAL_CHALLENGE_ROUNDS}. To move on, you need at least ${REQUIRED_CHALLENGE_ROUNDS}/${TOTAL_CHALLENGE_ROUNDS} correct. Refresh to try again or add a retry button.`;
+            document.getElementById('play-mystery-btn').disabled = true;
+        }
     }
 
     function scheduleInterrupt() {
