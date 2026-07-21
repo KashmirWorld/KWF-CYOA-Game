@@ -185,354 +185,412 @@
       background: #145c4b;
       color: white;
     }
+
   </style>
 </head>
 <body>
-  <div class="game-shell">
-    <div class="top-bar">
-      <div>
-        <h1>Sentinel Species Identification</h1>
-        <p id="tutorial-text">Learn the calls of three sentinel species, then match each mystery sound to the correct animal.</p>
-      </div>
-      <div class="hud">
-        <div class="hud-item" id="credits-readout">Credits: 0</div>
-        <div class="hud-item" id="data-readout">Data: 0</div>
-        <div class="hud-item" id="score">Challenge Score: 0 / 3</div>
-      </div>
+    <div class="game-shell">
+        <div class="top-bar">
+            <div>
+                <h1>Sentinel Species Identification</h1>
+                <p id="tutorial-text">Learn the calls of three sentinel species, then match each mystery sound to the correct animal.</p>
+            </div>
+            <div class="hud">
+                <div class="hud-item" id="credits-readout">Credits: 0</div>
+                <div class="hud-item" id="data-readout">Data: 0</div>
+                <div class="hud-item" id="score">Challenge Score: 0 / 5</div>
+            </div>
+        </div>
+
+        <section class="panel" id="learn-panel">
+            <h2>How to Play</h2>
+            <p>
+                First, listen to each species call and study its role in the rainforest. Then the game will begin the challenge phase.
+                During the challenge, drag the mystery sound token onto the correct species card. You need 3 correct matches to continue.
+            </p>
+            <div class="species-grid" id="species-list">
+                <div class="species" data-id="howler-monkey">
+                    <img src="../Photos/howler_monkey.jpg" alt="Howler Monkey" />
+                    <h3>Howler Monkey</h3>
+                    <button class="learn-btn" data-audio="../Audio/howler_monkey.mp3">Play Call</button>
+                </div>
+
+                <div class="species" data-id="great-tinamou">
+                    <img src="../Photos/great_tinamou.jpg" alt="Great Tinamou" />
+                    <h3>Great Tinamou</h3>
+                    <button class="learn-btn" data-audio="../Audio/great_tinamou.mp3">Play Call</button>
+                </div>
+
+                <div class="species" data-id="scarlet-macaw">
+                    <img src="../Photos/scarlet_macaw.jpg" alt="Scarlet Macaw" />
+                    <h3>Scarlet Macaw</h3>
+                    <button class="learn-btn" data-audio="../Audio/scarlet_macaw.mp3">Play Call</button>
+                </div>
+            </div>
+            <div style="margin-top:16px;">
+                <button class="action-btn" id="start-challenge-btn">Start Challenge</button>
+            </div>
+        </section>
+
+        <section class="panel hidden" id="challenge-panel">
+            <h2>Challenge Phase</h2>
+            <p id="challenge-text">Listen to the mystery call, then drag the sound token onto the matching species.</p>
+
+            <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:14px;">
+                <button class="action-btn" id="play-mystery-btn">Play Mystery Sound</button>
+                <button class="action-btn hidden" id="continue-btn">Continue to next path!</button>
+                <button class="action-btn hidden" id="retry-btn">Retry!</button>
+            </div>
+
+            <div class="audio-area" id="audio-draggables"></div>
+            <p id="feedback">Match 3 mystery sounds correctly to continue.</p>
+
+            <div class="species-grid" id="challenge-species-list">
+                <div class="species" data-id="howler-monkey">
+                    <img src="../Photos/howler_monkey.jpg" alt="Howler Monkey" />
+                    <span>Howler Monkey</span>
+                </div>
+                <div class="species" data-id="great-tinamou">
+                    <img src="../Photos/great_tinamou.jpg" alt="Great Tinamou" />
+                    <span>Great Tinamou</span>
+                </div>
+                <div class="species" data-id="scarlet-macaw">
+                    <img src="../Photos/scarlet_macaw.jpg" alt="Scarlet Macaw" />
+                    <span>Scarlet Macaw</span>
+                </div>
+            </div>
+        </section>
     </div>
 
-    <section class="panel" id="learn-panel">
-      <h2>How to Play</h2>
-      <p>
-        First, listen to each species call and study its role in the rainforest. Then the game will begin the challenge phase.
-        During the challenge, drag the mystery sound token onto the correct species card. You need 3 correct matches to continue.
-      </p>
-      <div class="species-grid" id="species-list">
-        <div class="species" data-id="howler-monkey">
-          <img src="../Photos/howler_monkey.jpg" alt="Howler Monkey" />
-          <h3>Howler Monkey</h3>
-          <button class="learn-btn" data-audio="../Audio/howler_monkey.mp3">Play Call</button>
-        </div>
 
-        <div class="species" data-id="great-tinamou">
-          <img src="../Photos/great_tinamou.jpg" alt="Great Tinamou" />
-          <h3>Great Tinamou</h3>
-          <button class="learn-btn" data-audio="../Audio/great_tinamou.mp3">Play Call</button>
-        </div>
-
-        <div class="species" data-id="scarlet-macaw">
-          <img src="../Photos/scarlet_macaw.jpg" alt="Scarlet Macaw" />
-          <h3>Scarlet Macaw</h3>
-          <button class="learn-btn" data-audio="../Audio/scarlet_macaw.mp3">Play Call</button>
-        </div>
-      </div>
-      <div style="margin-top:16px;">
-        <button class="action-btn" id="start-challenge-btn">Start Challenge</button>
-      </div>
-    </section>
-
-    <section class="panel hidden" id="challenge-panel">
-      <h2>Challenge Phase</h2>
-      <p id="challenge-text">Listen to the mystery call, then drag the sound token onto the matching species.</p>
-
-      <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:14px;">
-        <button class="action-btn" id="play-mystery-btn">Play Mystery Sound</button>
-        <button class="action-btn hidden" id="continue-btn">Continue to next path!</button>
-      </div>
-
-      <div class="audio-area" id="audio-draggables"></div>
-      <p id="feedback">Match 3 mystery sounds correctly to continue.</p>
-
-      <div class="species-grid" id="challenge-species-list">
-        <div class="species" data-id="howler-monkey">
-          <img src="../Photos/howler_monkey.jpg" alt="Howler Monkey" />
-          <span>Howler Monkey</span>
-        </div>
-        <div class="species" data-id="great-tinamou">
-          <img src="../Photos/great_tinamou.jpg" alt="Great Tinamou" />
-          <span>Great Tinamou</span>
-        </div>
-        <div class="species" data-id="scarlet-macaw">
-          <img src="../Photos/scarlet_macaw.jpg" alt="Scarlet Macaw" />
-          <span>Scarlet Macaw</span>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  
-      <p id="interrupt-feedback" style="margin-top:12px; font-weight:bold;"></p>
+    <p id="interrupt-feedback" style="margin-top:12px; font-weight:bold;"></p>
     </div>
-  </div>
+    </div>
 
-  <script src="../JavaScript/game-state.js"></script>
-  <script>
-    const speciesData = [
-      {
-        id: 'howler-monkey',
-        name: 'Howler Monkey',
-        img: '../Photos/howler_monkey.jpg',
-        audio: '../Audio/howler_monkey.mp3',
-        role: 'Booming calls, danger warning'
-      },
-      {
-        id: 'great-tinamou',
-        name: 'Great Tinamou',
-        img: '../Photos/great_tinamou.jpg',
-        audio: '../Audio/great_tinamou.mp3',
-        role: 'Ground-based repetitive calls'
-      },
-      {
-        id: 'scarlet-macaw',
-        name: 'Scarlet Macaw',
-        img: '../Photos/scarlet_macaw.jpg',
-        audio: '../Audio/scarlet_macaw.mp3',
-        role: 'Loud canopy calls'
-      }
-    ];
+    <script src="../JavaScript/game-state.js"></script>
+    <script>
+        const speciesData = [
+            {
+                id: 'howler-monkey',
+                name: 'Howler Monkey',
+                img: '../Photos/howler_monkey.jpg',
+                audio: '../Audio/howler_monkey.mp3',
+                role: 'Booming calls, danger warning'
+            },
+            {
+                id: 'great-tinamou',
+                name: 'Great Tinamou',
+                img: '../Photos/great_tinamou.jpg',
+                audio: '../Audio/great_tinamou.mp3',
+                role: 'Ground-based repetitive calls'
+            },
+            {
+                id: 'scarlet-macaw',
+                name: 'Scarlet Macaw',
+                img: '../Photos/scarlet_macaw.jpg',
+                audio: '../Audio/scarlet_macaw.mp3',
+                role: 'Loud canopy calls'
+            }
+        ];
 
-    let score = 0;
-    let challengeRound = 0;
-    const TOTAL_CHALLENGE_ROUNDS = 5;
-    const REQUIRED_CHALLENGE_ROUNDS = 3;
-    let currentChallengeSpecies = null;
-    let challengeTokenUsed = false;
-    let interruptsTriggered = 0;
-    const MAX_INTERRUPTS = 2;
+        let score = 0;
+        let challengeRound = 0;
+        const TOTAL_CHALLENGE_ROUNDS = 5;
+        const REQUIRED_CHALLENGE_ROUNDS = 3;
+        let currentChallengeSpecies = null;
+        let challengeTokenUsed = false;
+        let interruptsTriggered = 0;
+        const MAX_INTERRUPTS = 2;
+        let previousChallengeSpecies = null;
 
-    // learningAudio object for playing each animal's calls, set to null
-      let learningAudio = null;
+        // learningAudio object for playing each animal's calls, set to null
+        let learningAudio = null;
 
-    // mysteryAudio object for playing the mystery audio button, set to null
-    let mysteryAudio = null;
+        // mysteryAudio object for playing the mystery audio button, set to null
+        let mysteryAudio = null;
 
 
-    function initGame() {
-      if (window.RainforestGame && typeof window.RainforestGame.initState === 'function') {
-        window.RainforestGame.initState(100, 0);
-        window.RainforestGame.updateUI();
-      }
+        function initGame() {
+            if (window.RainforestGame && typeof window.RainforestGame.initState === 'function') {
+                window.RainforestGame.initState(100, 0);
+                window.RainforestGame.updateUI();
+            }
 
-      bindLearningButtons();
-      bindChallengeDropzones();
-      bindGeneralButtons();
-      updateScoreUI();
-    }
+            bindLearningButtons();
+            bindChallengeDropzones();
+            bindGeneralButtons();
+            updateScoreUI();
+        }
 
-    function bindLearningButtons() {
-      document.querySelectorAll('.learn-btn').forEach(btn => {
-          btn.addEventListener('click', () => {
+        function bindLearningButtons() {
+            document.querySelectorAll('.learn-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+
+                    // if it's null, initialize it to a new Audio
+                    if (!learningAudio) {
+                        learningAudio = new Audio(btn.dataset.audio);
+                    }
+                    else {
+                        // otherwise, just set it to the current audio to be played
+                        learningAudio.src = btn.dataset.audio;
+                    }
+
+                    learningAudio.currentTime = 0;
+                    learningAudio.play();
+                });
+            });
+        }
+
+        function bindGeneralButtons() {
+            document.getElementById('start-challenge-btn').addEventListener('click', startChallengePhase);
+            document.getElementById('play-mystery-btn').addEventListener('click', playMysterySound);
+            document.getElementById('continue-btn').addEventListener('click', () => {
+                window.location.href = 'path4.html';
+            });
+
+            document.getElementById('retry-btn').addEventListener('click', () => {
+                window.location.reload();
+            })
+        }
+
+        function startChallengePhase() {
+            document.getElementById('learn-panel').classList.add('hidden');
+            document.getElementById('challenge-panel').classList.remove('hidden');
+            startNextChallengeRound();
+
+        }
+
+        function startNextChallengeRound() {
+            if (challengeRound >= TOTAL_CHALLENGE_ROUNDS) {
+                finishChallenge();
+                return;
+            }
+
+            challengeRound++;
+            challengeTokenUsed = false;
+            currentChallengeSpecies = speciesData[Math.floor(Math.random() * speciesData.length)];
+
+            // While previousChallengeSpecies is defined and is the same as the new currentChallengeSpecies, keep randomizing until it isn't.
+            while(previousChallengeSpecies != null && currentChallengeSpecies == previousChallengeSpecies)
+            {
+                currentChallengeSpecies = speciesData[Math.floor(Math.random() * speciesData.length)];
+            }
+
+            previousChallengeSpecies = currentChallengeSpecies;
+
+            renderAudioToken();
+            document.getElementById('feedback').textContent = `Round ${challengeRound} of ${TOTAL_CHALLENGE_ROUNDS}: Play the mystery sound, then drag it to the correct species.`;
+        }
+
+        function renderAudioToken() {
+            const container = document.getElementById('audio-draggables');
+            container.innerHTML = '';
+
+            const chip = document.createElement('div');
+            chip.className = 'audio-chip';
+            chip.draggable = true;
+            chip.id = 'mystery-audio-chip';
+            chip.dataset.id = currentChallengeSpecies.id;
+            chip.textContent = '🔊 Mystery Call';
+
+            chip.addEventListener('dragstart', (e) => {
+                challengeTokenUsed = true;
+                chip.classList.add('dragging');
+                e.dataTransfer.setData('speciesId', currentChallengeSpecies.id);
+            });
+
+            chip.addEventListener('dragend', () => {
+                chip.classList.remove('dragging');
+            });
+
+            container.appendChild(chip);
+        }
+
+        function playMysterySound() {
+            if (!currentChallengeSpecies) return;
 
             // if it's null, initialize it to a new Audio
-            if (!learningAudio) {
-                learningAudio = new Audio(btn.dataset.audio);
+            if (!mysteryAudio) {
+                mysteryAudio = new Audio(currentChallengeSpecies.audio);
             }
-            else
-            {
+            else {
                 // otherwise, just set it to the current audio to be played
-                learningAudio.src = btn.dataset.audio;
+                mysteryAudio.src = currentChallengeSpecies.audio;
             }
 
-            learningAudio.currentTime = 0;
-            learningAudio.play();
-        });
-      });
-    }
-
-    function bindGeneralButtons() {
-      document.getElementById('start-challenge-btn').addEventListener('click', startChallengePhase);
-      document.getElementById('play-mystery-btn').addEventListener('click', playMysterySound);
-      document.getElementById('continue-btn').addEventListener('click', () => {
-        window.location.href = 'path4.html';
-      });
-    }
-
-    function startChallengePhase() {
-      document.getElementById('learn-panel').classList.add('hidden');
-      document.getElementById('challenge-panel').classList.remove('hidden');
-      startNextChallengeRound();
-      
-    }
-
-    function startNextChallengeRound() {
-      if (challengeRound >= TOTAL_CHALLENGE_ROUNDS) {
-        finishChallenge();
-        return;
-      }
-
-      challengeRound++;
-      challengeTokenUsed = false;
-      currentChallengeSpecies = speciesData[Math.floor(Math.random() * speciesData.length)];
-      renderAudioToken();
-      document.getElementById('feedback').textContent = `Round ${challengeRound} of ${TOTAL_CHALLENGE_ROUNDS}: Play the mystery sound, then drag it to the correct species.`;
-    }
-
-    function renderAudioToken() {
-      const container = document.getElementById('audio-draggables');
-      container.innerHTML = '';
-
-      const chip = document.createElement('div');
-      chip.className = 'audio-chip';
-      chip.draggable = true;
-      chip.id = 'mystery-audio-chip';
-      chip.dataset.id = currentChallengeSpecies.id;
-      chip.textContent = '🔊 Mystery Call';
-
-      chip.addEventListener('dragstart', (e) => {
-        challengeTokenUsed = true;
-        chip.classList.add('dragging');
-        e.dataTransfer.setData('speciesId', currentChallengeSpecies.id);
-      });
-
-      chip.addEventListener('dragend', () => {
-        chip.classList.remove('dragging');
-      });
-
-      container.appendChild(chip);
-    }
-
-    function playMysterySound() {
-        if (!currentChallengeSpecies) return;
-
-        // if it's null, initialize it to a new Audio
-        if (!mysteryAudio) {
-            mysteryAudio = new Audio(currentChallengeSpecies.audio);
-        }
-        else {
-            // otherwise, just set it to the current audio to be played
-            mysteryAudio.src = currentChallengeSpecies.audio;
+            // sets the current time of the audio to the start and plays it
+            mysteryAudio.currentTime = 0;
+            mysteryAudio.play();
         }
 
-        // sets the current time of the audio to the start and plays it
-        mysteryAudio.currentTime = 0;
-        mysteryAudio.play();
-    }
+        function bindChallengeDropzones() {
+            document.querySelectorAll('#challenge-species-list .species').forEach(el => {
+                el.addEventListener('dragover', (e) => e.preventDefault());
 
-    function bindChallengeDropzones() {
-      document.querySelectorAll('#challenge-species-list .species').forEach(el => {
-        el.addEventListener('dragover', (e) => e.preventDefault());
+                el.addEventListener('drop', (e) => {
+                    e.preventDefault();
 
-        el.addEventListener('drop', (e) => {
-          e.preventDefault();
+                    const draggedId = e.dataTransfer.getData('speciesId');
+                    if (!draggedId || !currentChallengeSpecies) return;
 
-          const draggedId = e.dataTransfer.getData('speciesId');
-          if (!draggedId || !currentChallengeSpecies) return;
+                    clearSpeciesStates();
 
-          clearSpeciesStates();
+                    if (draggedId === el.dataset.id) {
+                        score += 1;
+                        el.classList.add('correct');
+                        document.getElementById('feedback').textContent = `Correct! ${currentChallengeSpecies.name} identified. +1 Data`;
+                        awardData(1);
+                    } else {
+                        el.classList.add('incorrect');
+                        const correctEl = document.querySelector(`#challenge-species-list .species[data-id="${currentChallengeSpecies.id}"]`);
+                        if (correctEl) correctEl.classList.add('correct');
+                        document.getElementById('feedback').textContent = `Not quite. That call belonged to the ${currentChallengeSpecies.name}.`;
+                    }
 
-          if (draggedId === el.dataset.id) {
-            score += 1;
-            el.classList.add('correct');
-            document.getElementById('feedback').textContent = `Correct! ${currentChallengeSpecies.name} identified. +1 Data`;
-            awardData(1);
-          } else {
-            el.classList.add('incorrect');
-            const correctEl = document.querySelector(`#challenge-species-list .species[data-id="${currentChallengeSpecies.id}"]`);
-            if (correctEl) correctEl.classList.add('correct');
-            document.getElementById('feedback').textContent = `Not quite. That call belonged to the ${currentChallengeSpecies.name}.`;
-          }
+                    updateScoreUI();
 
-          updateScoreUI();
+                    const token = document.getElementById('mystery-audio-chip');
+                    if (token) token.remove();
 
-          const token = document.getElementById('mystery-audio-chip');
-          if (token) token.remove();
+                    setTimeout(() => {
+                        clearSpeciesStates();
+                        startNextChallengeRound();
+                    }, 1800);
+                });
+            });
+        }
 
-          setTimeout(() => {
+        function clearSpeciesStates() {
+            document.querySelectorAll('#challenge-species-list .species').forEach(el => {
+                el.classList.remove('correct', 'incorrect', 'glow');
+            });
+        }
+
+        function updateScoreUI() {
+            document.getElementById('score').textContent = `Challenge Score: ${score} / ${TOTAL_CHALLENGE_ROUNDS}`;
+            if (window.RainforestGame && typeof window.RainforestGame.updateUI === 'function') {
+                window.RainforestGame.updateUI();
+            }
+        }
+
+        function awardData(amount) {
+            if (window.RainforestGame && typeof window.RainforestGame.addData === 'function') {
+                window.RainforestGame.addData(amount);
+                window.RainforestGame.updateUI();
+            }
+        }
+
+        function finishChallenge() {
+            if (score >= REQUIRED_CHALLENGE_ROUNDS) {
+                document.getElementById('feedback').textContent = 'Excellent work. You identified the majority of sentinel species correctly. You may continue to the next path.';
+                document.getElementById('continue-btn').classList.remove('hidden');
+                document.getElementById('play-mystery-btn').disabled = true;
+            } else {
+                document.getElementById('feedback').textContent = `You finished with ${score}/${TOTAL_CHALLENGE_ROUNDS}. To move on, you need at least ${REQUIRED_CHALLENGE_ROUNDS}/${TOTAL_CHALLENGE_ROUNDS} correct. Click the retry button to try again.`;
+                document.getElementById('retry-btn').classList.remove('hidden');
+                document.getElementById('play-mystery-btn').disabled = true;
+            }
+        }
+
+        function restartChallenge() {
+            score = 0;
+            challengeRound = 0;
+            currentChallengeSpecies = null;
+            challengeTokenUsed = false;
+            interruptsTriggered = 0;
+
             clearSpeciesStates();
-            startNextChallengeRound();
-          }, 1800);
-        });
-      });
-    }
-
-    function clearSpeciesStates() {
-      document.querySelectorAll('#challenge-species-list .species').forEach(el => {
-        el.classList.remove('correct', 'incorrect', 'glow');
-      });
-    }
-
-    function updateScoreUI() {
-      document.getElementById('score').textContent = `Challenge Score: ${score} / ${TOTAL_CHALLENGE_ROUNDS}`;
-      if (window.RainforestGame && typeof window.RainforestGame.updateUI === 'function') {
-        window.RainforestGame.updateUI();
-      }
-    }
-
-    function awardData(amount) {
-      if (window.RainforestGame && typeof window.RainforestGame.addData === 'function') {
-        window.RainforestGame.addData(amount);
-        window.RainforestGame.updateUI();
-      }
-    }
-
-    function finishChallenge() {
-        if (score >= REQUIRED_CHALLENGE_ROUNDS) {
-            document.getElementById('feedback').textContent = 'Excellent work. You identified the majority of sentinel species correctly. You may continue to the next path.';
-            document.getElementById('continue-btn').classList.remove('hidden');
-            document.getElementById('play-mystery-btn').disabled = true;
-        } else {
-            document.getElementById('feedback').textContent = `You finished with ${score}/${TOTAL_CHALLENGE_ROUNDS}. To move on, you need at least ${REQUIRED_CHALLENGE_ROUNDS}/${TOTAL_CHALLENGE_ROUNDS} correct. Refresh to try again or add a retry button.`;
-            document.getElementById('play-mystery-btn').disabled = true;
+            updateScoreUI();
         }
-    }
 
-    function scheduleInterrupt() {
-      if (interruptsTriggered >= MAX_INTERRUPTS) return;
+        function scheduleInterrupt() {
+            if (interruptsTriggered >= MAX_INTERRUPTS) return;
 
-      const delay = Math.random() * 8000 + 4000;
-      setTimeout(() => {
-        if (document.getElementById('challenge-panel').classList.contains('hidden')) return;
-        runInterrupt();
-      }, delay);
-    }
+            const delay = Math.random() * 8000 + 4000;
+            setTimeout(() => {
+                if (document.getElementById('challenge-panel').classList.contains('hidden')) return;
+                runInterrupt();
+            }, delay);
+        }
 
-    function runInterrupt() {
-      interruptsTriggered++;
+        function runInterrupt() {
+            interruptsTriggered++;
 
-      const species = speciesData[Math.floor(Math.random() * speciesData.length)];
-      const modal = document.getElementById('interrupt-modal');
-      const interruptText = document.getElementById('interrupt-text');
-      const feedback = document.getElementById('interrupt-feedback');
-      const buttons = document.querySelectorAll('.interrupt-btn');
+            const species = speciesData[Math.floor(Math.random() * speciesData.length)];
+            const modal = document.getElementById('interrupt-modal');
+            const interruptText = document.getElementById('interrupt-text');
+            const feedback = document.getElementById('interrupt-feedback');
+            const buttons = document.querySelectorAll('.interrupt-btn');
 
-      interruptText.textContent = 'Stop! Listen! A sentinel species is nearby. Can you identify it?';
-      feedback.textContent = '';
-      modal.style.display = 'flex';
-
-      buttons.forEach(btn => {
-        btn.disabled = true;
-        btn.onclick = null;
-      });
-
-      buttons.forEach(btn => {
-        btn.onclick = () => {
-          if (btn.disabled) return;
-
-          if (btn.dataset.id === species.id) {
-            feedback.textContent = "Correct! Bonus Data earned.";
-            awardData(1);
-          } else {
-            feedback.textContent = `Close, but it was the ${species.name}.`;
-          }
-
-          buttons.forEach(b => b.disabled = true);
-
-          setTimeout(() => {
-            modal.style.display = 'none';
+            interruptText.textContent = 'Stop! Listen! A sentinel species is nearby. Can you identify it?';
             feedback.textContent = '';
-            
-          }, 1800);
-        };
-      });
+            modal.style.display = 'flex';
 
-      const audio = new Audio(species.audio);
-      audio.play();
-      audio.addEventListener('ended', () => {
-        buttons.forEach(btn => btn.disabled = false);
-      });
-    }
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                btn.onclick = null;
+            });
 
-    initGame();
-  </script>
+            buttons.forEach(btn => {
+                btn.onclick = () => {
+                    if (btn.disabled) return;
+
+                    if (btn.dataset.id === species.id) {
+                        feedback.textContent = "Correct! Bonus Data earned.";
+                        awardData(1);
+                    } else {
+                        feedback.textContent = `Close, but it was the ${species.name}.`;
+                    }
+
+                    buttons.forEach(b => b.disabled = true);
+
+                    setTimeout(() => {
+                        modal.style.display = 'none';
+                        feedback.textContent = '';
+
+                    }, 1800);
+                };
+            });
+
+            const audio = new Audio(species.audio);
+            audio.play();
+            audio.addEventListener('ended', () => {
+                buttons.forEach(btn => btn.disabled = false);
+            });
+        }
+
+        initGame();
+    </script>
+
+    <div id="tutorial-modal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; display: flex; justify-content: center; align-items: center; color: white;">
+        <div style="background: #145c4b; padding: 30px; border-radius: 12px; max-width: 500px; text-align: center;">
+            <tut-h2 id="tutorial-title">Welcome!</tut-h2>
+            <tut-p id="tut-text">Learn look into identifying sentinel species!</tut-p>
+            <tut-btn id="next-tut-btn" class="btn btn-primary" style="margin-top: 20px;">Next</tut-btn>
+        </div>
+    </div>
+    <script>
+        const tutorialSteps = [
+            { title: "How to Play", text: "During the challenge, drag the mystery sound token onto the correct species card.You need 3 correct matches to continue." },
+            { title: "Before You Start", text: "Listen to each species call and study its role in the rainforest. Then the game will begin the challenge phase."},
+            { title: "Ready?", text: "You need to get at least 3 correct out of 5 rounds to win. Good luck!" }
+        ];
+        let step = 0;
+        const modal = document.getElementById('tutorial-modal');
+        const btn = document.getElementById('next-tut-btn');
+        const title = document.getElementById('tutorial-title');
+        const text = document.getElementById('tut-text');
+
+        btn.addEventListener('click', () => {
+            step++;
+            if (step < tutorialSteps.length) {
+                title.textContent = tutorialSteps[step].title;
+                text.textContent = tutorialSteps[step].text;
+                if (step === tutorialSteps.length - 1) btn.textContent = "Start Game";
+            } else {
+                modal.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>
