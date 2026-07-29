@@ -98,6 +98,11 @@
             background: rgba(244, 67, 54, 0.2);
         }
 
+        .sound-card.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
         .sound-name {
             font-weight: 600;
             margin-bottom: 8px;
@@ -132,7 +137,7 @@
         }
 
         .feedback.correct {
-            color: #4caf50;
+            color: #89E88B;
         }
 
         .feedback.wrong {
@@ -200,6 +205,7 @@
         <div class="controls">
   <button class="btn" id="playSound">▶ Play Sound</button>
   <button class="btn btn-primary" id="nextRound">Next Round</button>
+  <button class="btn" id="retry-btn" style="display:none;">Retry!</button>
   <button id="finishBtn" class="btn btn-primary" style="display:none;">Finish & Continue</button>
 </div>
 
@@ -212,6 +218,9 @@
   let playedSound = false;
   const TOTAL_ROUNDS = 5;
   const SUCCESS_THRESHOLD = 3;
+
+  // New value that holds the previous correctSound
+  let previousSound = null;
 
   const sounds = [
     { name: "Car Engine", freqs: [80, 120, 200, 350], type: "sawtooth", duration: 2.5 },
@@ -238,13 +247,26 @@
     document.getElementById('playSound').addEventListener('click', playCurrentSound);
     document.getElementById('nextRound').addEventListener('click', nextRound);
     document.getElementById('finishBtn').addEventListener('click', finishGame);
+    document.getElementById('retry-btn').addEventListener('click', () => {
+        window.location.reload();
+    })
   }
 
   function nextRound() {
     if (currentRound >= TOTAL_ROUNDS) return;
 
     currentRound++;
+
+    // Where the next round audio is selected. Randomize this.
     correctSound = sounds[Math.floor(Math.random() * sounds.length)];
+
+    // While previousSound is defined and is the same as the new sound, keep randomizing until it isn't.
+    while (previousSound != null && correctSound == previousSound)
+    {
+        correctSound = sounds[Math.floor(Math.random() * sounds.length)];
+    }
+
+    previousSound = correctSound;
 
     let options = [...sounds].sort(() => Math.random() - 0.5).slice(0, 4);
     renderSoundCards(options);
@@ -269,14 +291,35 @@
       return;
     }
 
-    if (score >= SUCCESS_THRESHOLD) {
-      if (window.RainforestGame && typeof window.RainforestGame.addData === 'function') {
-        window.RainforestGame.addData(2);
-        window.RainforestGame.updateUI();
+      disableSoundCards();
+
+    if (score >= SUCCESS_THRESHOLD) 
+    {
+      if (window.RainforestGame && typeof window.RainforestGame.addData === 'function') 
+      {
+          window.RainforestGame.addData(2);
+          window.RainforestGame.updateUI();
       }
-      window.location.href = 'path3.html';
-    } else {
-      document.getElementById('feedback').textContent = `You need at least ${SUCCESS_THRESHOLD} correct. You got ${score}.`;
+
+      document.getElementById('finishBtn').addEventListener('click', () => {
+        window.location.href = 'path3.html';
+      });
+
+      let feedbacktext = 'Excellent work. You identified the majority of sentinel species correctly. You may continue to the next path.';
+
+      if (score == TOTAL_ROUNDS) 
+      {
+          feedbacktext = 'Excellent work! You identified all of the sentinel species correctly. You may continue to the next path.';
+      }
+
+      document.getElementById('feedback').textContent = feedbacktext;
+      document.getElementById('feedback').className = 'feedback correct';
+    }
+    else
+    {
+      document.getElementById('feedback').textContent = `You finished with ${score}/${TOTAL_ROUNDS}. To move on, you need at least ${SUCCESS_THRESHOLD}/${TOTAL_ROUNDS} correct. Click the retry button to try again.`;
+      document.getElementById('finishBtn').style.display = 'none';
+      document.getElementById('retry-btn').style.display = 'inline-block';
       document.getElementById('feedback').className = 'feedback wrong';
     }
   }
@@ -338,6 +381,12 @@
     });
   }
 
+  function disableSoundCards() {
+      const container = document.getElementById('soundCards');
+      container.querySelectorAll('.sound-card').forEach(card => card.classList.add('disabled'));
+  }
+
+  // Currently prevents current sound from being played again, good for challenge but not great if the player misses the initial sound.
   function playCurrentSound() {
     if (!playedSound) {
       generateSound(correctSound);

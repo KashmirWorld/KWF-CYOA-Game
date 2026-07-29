@@ -10,7 +10,8 @@
       font-family: system-ui, sans-serif;
       margin: 0;
       padding: 20px;
-      background: linear-gradient(135deg, #0f4f3e, #166b52);
+      background: linear-gradient(135deg, #0f4f3e 25%, #166b52 25%, #166b52 50%, #0f4f3e 50%, #0f4f3e 75%, #166b52 75%, #166b52 100%);
+      background-size: 64px 64px;
       color: #05303b;
     }
 
@@ -482,7 +483,11 @@
 
         function finishChallenge() {
             if (score >= REQUIRED_CHALLENGE_ROUNDS) {
-                document.getElementById('feedback').textContent = 'Excellent work. You identified the majority of sentinel species correctly. You may continue to the next path.';
+                feedbacktext = 'Excellent work. You identified the majority of sentinel species correctly. You may continue to the next path.';
+                if (score == TOTAL_CHALLENGE_ROUNDS) {
+                    feedbacktext = 'Excellent work! You identified all of the sentinel species correctly. You may continue to the next path.';
+                }
+                document.getElementById('feedback').textContent = feedbacktext;
                 document.getElementById('continue-btn').classList.remove('hidden');
                 document.getElementById('play-mystery-btn').disabled = true;
             } else {
