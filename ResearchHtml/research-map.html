@@ -4,22 +4,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KwF Research Hub – Project Map</title>
-  <link rel="stylesheet" href="css/research-hub-style.css">
+  <link rel="stylesheet" href="css/research-map-style.css">
+  <link href='https://fonts.googleapis.com/css?family=MuseoModerno' rel='stylesheet'>
   
 </head>
 <body>
-  <div class="title">
+  <div class="container">
 
+  <div class="title">
     <header class="map-header fade-in">
       <a href="Slide1-welcome.html" class="back-link">&larr; Back</a>
       <h1>Our Global Projects</h1>
-      <p class="map-subtitle">Click a location to explore a project</p>
+      <p class="map-subtitle">Hover over a location and click on the text to explore a project</p>
     </header>
   </div>
-  
+  <div class="bg-map">
+    
+  </div>
+  <!-- image map
   <div class="bg-map">
     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 2238 1195">
-    <image width="2238" height="1195" xlink:href="../Photos/Research_hub_map.png"></image> 
+    <image width="2238" height="1195" xlink:href="Photos/Research_hub_map_gray.png"></image> 
     <a xlink:href="Slide4-mishell.html">
       <rect x="403" y="411" fill="#fff" opacity="0" width="100" height="145"></rect>
     </a><a xlink:href="Slide6-bioacoustics.html">
@@ -31,7 +36,58 @@
     </a>
     </svg>
   </div>
+   -->
+  
 
-  <script src="js/map.js"></script>
+  
+    <img class="pin" id="pin1" src="Photos/Pin.png" alt="Ecuador pin" onmouseover="fancy_display(1)" onmouseout="delay_display(1)">
+    <img class="pin" id="pin2" src="Photos/Pin.png" alt="South Africa pin" onmouseover="fancy_display(2)" onmouseout="delay_display(2)">
+    <img class="pin" id="pin3" src="Photos/Pin.png" alt="Himalayas pin" onmouseover="fancy_display(3)" onmouseout="delay_display(3)">
+    <img class="pin" id="pin4" src="Photos/Pin.png" alt="Costa Rica pin" onmouseover="fancy_display(4)" onmouseout="delay_display(4)">
+
+    <img id="map-icon1" src="Photos/Ecuador.png" style="display:none">
+    <img id="map-icon2" src="Photos/South_Africa.png" style="display:none">
+    <img id="map-icon3" src="Photos/Himalayas.png" style="display:none">
+    <img id="map-icon4" src="Photos/Costa_Rica.png" style="display:none">
+
+    <span class="project-text" id="project1" style="display:none" onclick="navigate(1)">Bioacoustic Research</span>
+    <span class="project-text" id="project2" style="display:none" onclick="navigate(2)">UAV in Africa</span>
+    <span class="project-text" id="project3" style="display:none" onclick="navigate(3)">Project Trinity</span>
+    <span class="project-text" id="project4" style="display:none" onclick="navigate(4)">Sea Turtle <br/> Drone (MiSHELL)</span>
+</div>
+  <!-- <script src="js/map.js"></script> -->
+  <script>
+    function fancy_display(i) {
+      document.getElementById('project' + i).style.display = 'block'; // show text
+      document.getElementById('map-icon' + i).style.display = 'block'; // show map icon
+      var pin = document.getElementById('pin' + i);
+      pin.classList.add("floating"); // floating pin animation
+    }
+    function delay_display(i) {
+      setTimeout(hide_display, 1000, i); // delay of 3000ms
+    }
+    function hide_display(i) {
+      document.getElementById('project' + i).style.display = 'none'; // hide text
+      document.getElementById('map-icon' + i).style.display = 'none'; // hide map icon
+      var pin = document.getElementById('pin' + i);
+      pin.classList.remove("floating");
+    }
+    function navigate(i) {
+      switch(i) {
+        case 1:
+          window.location.href = "Slide4-mishell.html";
+          break;
+        case 2:
+          window.location.href = "Slide3-uav.html";
+          break;
+        case 3:
+          window.location.href = "Slide5-trinity.html";
+          break;
+        case 4:
+          window.location.href = "Slide6-bioacoustics.html";
+          break;
+      }
+    }
+  </script>
 </body>
 </html>
