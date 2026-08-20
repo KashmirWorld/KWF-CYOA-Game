@@ -256,6 +256,10 @@
       font-size: 0.95rem;
     }
 
+    .rightmost {
+        margin-left: auto;
+    }
+
     .am-button-primary,
     .text-submit {
       background: var(--primary);
@@ -426,13 +430,13 @@
           <div id="free-response-area" class="free-response-wrap hidden">
             <label for="free-response" class="sr-only">Type your answer</label>
             <textarea id="free-response" class="free-response" placeholder="Explain your answer in one or two sentences."></textarea>
-            <button class="text-submit" id="submit-text-answer">Submit Answer</button>
+            <button class="text-submit" hidden id="submit-text-answer">Submit Answer</button>
           </div>
 
           <div class="answer-actions">
             <button class="am-button am-button-primary" id="check-answer">Check Answer</button>
             <button class="am-button" id="next-question" disabled>Next Question</button>
-            <button class="am-button" id="restart-quiz">Restart Quiz</button>
+            <button class="am-button rightmost" id="restart-quiz">Restart Quiz</button>
           </div>
 
           <div class="feedback info" id="feedback-box">Read the clue, choose an answer, and collect Data with each correct response.</div>
@@ -509,54 +513,54 @@
             prompt: 'Why are top predators important in a rainforest ecosystem?',
             context: 'Think about what happens when one major species disappears from the food web.',
             options: [
-              'They keep prey populations in balance and help stabilize the food web.',
-              'They turn sunlight directly into plant energy.',
-              'They only matter during the dry season.',
-              'They make rivers flow faster through the forest.'
+              "They keep different species' populations from growing too large, which stabilizes the rainforest's food web.",
+              'They convert sunlight directly into plant energy to maintain food sources for herbivore species.',
+              'They only matter during the dry season and do not have any importance in a rainforest ecosystem.',
+              "They eat all of the herbivore species, allowing the rainforest's plants to grow without any interference."
             ],
             correctIndex: 0,
             reward: 3,
-            explanation: 'Top predators regulate prey populations, which helps prevent cascading imbalances across the ecosystem.'
+            explanation: "Top predators don't consume all the available prey. Instead, they regulate their population sizes, which helps prevent imbalances across the ecosystem."
           },
           {
             id: 'q2',
             type: 'multiple-choice',
-            prompt: 'Which threat usually causes the largest direct loss of rainforest habitat?',
+            prompt: 'Which of these options causes the largest amount of damage to the rainforest habitat?',
             context: 'Choose the option that most directly removes the forest itself.',
             options: [
+              'Seasonal flooding',
+              'Deforestation',
               'Selective bird migration',
-              'Deforestation for logging or agriculture',
-              'Seasonal fruit production',
-              'Natural seed dispersal by animals'
+              'Natural landslides'
             ],
             correctIndex: 1,
             reward: 3,
-            explanation: 'Deforestation clears habitat outright, shrinking living space for many species at once.'
+            explanation: 'While all options affect the rainforests, deforestation directly and dramatically reduces habitat size, shrinking the space that many animals and plants depend on.'
           },
           {
-            id: 'q3',
-            type: 'free-response',
-            prompt: 'A monkey species suddenly avoids a noisy logging area. What behavior change is it showing, and why might that matter for conservation?',
-            context: 'Mention both the behavior and one conservation impact in your answer.',
+              id: 'q3',
+              type: 'free-response',
+              prompt: "While many species use the same resources, they may have different schedules and behaviors to avoid competition. One example behavior is nocturnality, which is seen in animals like owls and raccoons. What does it mean when an animal is nocturnal?",
+              context: 'Think about the characteristics of owls and raccoons, and what behavior the two share.',
             reward: 4,
-            acceptableKeywords: ['avoid', 'move', 'leave', 'disturb', 'noise', 'habitat', 'stress', 'feeding', 'nesting', 'pollution', 'population', 'level'],
-            minimumKeywordMatches: 1,
-            explanation: 'This is disturbance-driven behavior change. When animals avoid noisy areas, they may lose feeding, nesting, or breeding space.'
+            acceptableKeywords: ['awake at night', 'asleep during the day', 'sleeping during the day', 'active at night', 'inactive during the day', 'sleep', 'awake', 'active', 'inactive', 'behavior', 'characteristic', 'hunts'],
+              minimumKeywordMatches: 1,
+              explanation: 'Nocturnality is the behavior of being active or awake during the night and inactive or asleep during the day. Nocturnal animals, such as owls and raccoons, are active mostly at night and typically search for food.'
           },
           {
             id: 'q4',
             type: 'multiple-choice',
-            prompt: 'What is one reason biodiversity makes an ecosystem more resilient?',
-            context: 'Think about how many species can share jobs in an ecosystem.',
+            prompt: 'Based on the sentinel species minigame, which of these options is NOT one of the sentinel species?',
+            context: 'Think about which species did not appear in the sentinel species minigame.',
             options: [
-              'It guarantees that no species will ever go extinct.',
-              'It gives the ecosystem multiple species that can support key roles if conditions change.',
-              'It prevents all storms and droughts.',
-              'It makes every animal eat the same food source.'
+              'Great Tinamou',
+              'Howler Monkey',
+              'Yellow Anaconda',
+              'Scarlet Macaw'
             ],
-            correctIndex: 1,
+            correctIndex: 2,
             reward: 5,
-            explanation: 'High biodiversity spreads ecological roles across many organisms, so the system can better absorb change.'
+            explanation: 'While all of the species can be sentinel species, the Yellow Anaconda is the only species not included in the sentinel species minigame.'
           }
         ]
       }
